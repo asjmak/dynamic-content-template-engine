@@ -1,10 +1,23 @@
 import "./globals.css";
 import type { Metadata } from "next";
+import CookieConsent from "@/components/CookieConsent";
 
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"),
-  title: "Dynamic Content Template Engine",
-  description: "Website dinamis yang tampilan & isinya dikelola dari database.",
+  title: "VigRX Plus – Doctor-Endorsed Male Vitality Supplement",
+  description: "Clinically studied herbal formula for stronger, longer-lasting performance — backed by a 67-day money-back guarantee.",
+  alternates: { canonical: "/" },
+  robots: { index: true, follow: true },
+  openGraph: {
+    title: "VigRX Plus – Doctor-Endorsed Male Vitality",
+    description: "Clinically studied herbal male enhancement supplement with 67-day money-back guarantee.",
+    url: "/",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "VigRX Plus – Doctor-Endorsed Male Vitality",
+    description: "Clinically studied herbal formula for stronger, longer-lasting performance.",
+  },
 };
 
 export default function RootLayout({
@@ -13,8 +26,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="id">
-      <body>{children}</body>
+    <html lang="en-US">
+      <body>
+        {children}
+        <CookieConsent />
+      </body>
     </html>
   );
 }

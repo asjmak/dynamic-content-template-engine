@@ -33,19 +33,26 @@ export default function LeadForm({ section }: { section: SectionWithContents }) 
     }
   }
 
+  const trust: string[] = Array.isArray(s.trust) ? s.trust : [];
+
   return (
-    <section className="section">
+    <section className="section" id={s.anchor || undefined}>
       <div className="container single-column" style={{ maxWidth: 560 }}>
+        {s.urgency ? (
+          <p className="lead-urgency">⏳ {s.urgency}</p>
+        ) : null}
         <h2 className="section-title">{s.title || "Get Exclusive Info"}</h2>
         {s.subtitle && (
-          <p style={{ textAlign: "center", color: "#64748b" }}>{s.subtitle}</p>
+          <p style={{ textAlign: "center", color: "#64748b", marginTop: -16 }}>
+            {s.subtitle}
+          </p>
         )}
         {status === "done" && !s.redirect_url ? (
           <p className="dash-card" style={{ textAlign: "center" }}>
             Thank you! Our team will reach out shortly.
           </p>
         ) : (
-          <form onSubmit={onSubmit} className="form">
+          <form onSubmit={onSubmit} className="form lead-form">
             <input
               placeholder="Full Name"
               value={name}
@@ -72,7 +79,19 @@ export default function LeadForm({ section }: { section: SectionWithContents }) 
               {s.cta_label || "Submit"}
             </button>
             {status === "error" && <p className="error">{msg}</p>}
+            <p className="form-trust">
+              🔒 We never share your email · Unsubscribe in one click
+            </p>
           </form>
+        )}
+        {trust.length > 0 && (
+          <div className="lead-trust">
+            {trust.map((t: string, i: number) => (
+              <span key={i} className="lead-trust-badge">
+                {t}
+              </span>
+            ))}
+          </div>
         )}
       </div>
     </section>

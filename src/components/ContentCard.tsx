@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { Content } from "@/lib/types";
 
 const SEMANTIC = new Set(["pro", "con", "stat", "testimonial", "hero", "offer", "problem"]);
@@ -31,8 +32,14 @@ export default function ContentCard({ content }: { content: Content }) {
   return (
     <div className={cls}>
       {c.image_url && (
-        // eslint-disable-next-line @next/next/no-img-element
-        <img src={c.image_url} alt={c.title ?? ""} className="card-img" />
+        <Image
+          src={c.image_url}
+          alt={c.title ?? ""}
+          className="card-img"
+          width={700}
+          height={438}
+          sizes="(max-width: 680px) 100vw, 330px"
+        />
       )}
 
       {isStat ? (

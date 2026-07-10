@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { SectionWithContents } from "@/lib/types";
 
 export default function Hero({ section }: { section: SectionWithContents }) {
@@ -28,7 +29,11 @@ export default function Hero({ section }: { section: SectionWithContents }) {
             </div>
           )}
           {link && cta && (
-            <a className="btn btn-lg" href={link.url} target="_blank" rel="noopener noreferrer">
+            <a
+              className="btn btn-lg"
+              href={link.url}
+              {.../^#|\//.test(link.url) ? {} : { target: "_blank", rel: "noopener noreferrer" }}
+            >
               {cta}
             </a>
           )}
@@ -36,8 +41,15 @@ export default function Hero({ section }: { section: SectionWithContents }) {
 
         {hero?.image_url && (
           <div className="hero-media">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img className="hero-img" src={hero.image_url} alt={hero.title ?? ""} />
+            <Image
+              className="hero-img"
+              src={hero.image_url}
+              alt={hero.title ?? ""}
+              width={700}
+              height={525}
+              priority
+              sizes="(max-width: 900px) 100vw, 500px"
+            />
             <div className="guarantee-seal">
               67-Day
               <br />

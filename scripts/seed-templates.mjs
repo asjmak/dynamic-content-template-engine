@@ -40,22 +40,24 @@ function uuid(key) {
 const LINKS = {
   official: "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa",
   promo: "bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb",
+  scroll: "dddddddd-dddd-dddd-dddd-dddddddddddd",
 };
 
 const IMG = {
   product: "https://images.unsplash.com/photo-1556228720-195a672e8a03?w=700&q=80",
   man: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=900&q=80",
   herbs: "https://images.unsplash.com/photo-1518611012118-696072aa579a?w=900&q=80",
+  hero: "https://images.unsplash.com/photo-1606871796789-3b5a8d3c7c1f?w=600&q=80",
 };
 
 const DISCLAIMER =
   "© 2026 VigRX Plus Affiliate Demo. Statements have not been evaluated by the FDA. " +
   "This product is not intended to diagnose, treat, cure, or prevent any disease. " +
-  "Individual results vary. Affiliate disclosure: we may earn a commission.";
+  "Individual results vary. Affiliate disclosure: we may earn a commission from qualified purchases.";
 
 const STAR = "★★★★★";
 
-// ===================== TEMPLATES (tanpa id; di-generate saat insert) =====================
+// ===================== TEMPLATES =====================
 const TEMPLATES = {
   // ---------------------------------------------------------------- CLASSIC SALES
   "classic-sales": {
@@ -65,10 +67,10 @@ const TEMPLATES = {
         title: "Hero",
         ordering: 10,
         settings: {
-          heading: "VigRX Plus® — Doctor-Endorsed Male Vitality",
+          heading: "Doctor-Endorsed VigRX Plus® for Stronger, Longer Performance",
           subheading:
-            "A clinically studied herbal formula for stronger, longer-lasting performance — backed by a 67-day money-back guarantee.",
-          cta_label: "Order VigRX Plus",
+            "A clinically studied herbal formula that supports healthy blood flow and hormone balance — backed by 67-day money-back guarantee.",
+          cta_label: "Get Your Risk-Free 67-Day Supply",
           rating: "4.8/5 from 1,200+ verified buyers",
           badges: ["Clinically Studied", "67-Day Guarantee", "Made in USA"],
         },
@@ -77,7 +79,7 @@ const TEMPLATES = {
             title: "VigRX Plus®",
             body: "Try it risk-free with our full 67-day money-back guarantee.",
             image_url: IMG.product,
-            cta_text: "Order Now",
+            cta_text: "Get My Risk-Free Supply",
             category: "hero",
             links: ["official"],
           },
@@ -85,24 +87,24 @@ const TEMPLATES = {
       },
       {
         block_type: "grid",
-        title: "Why Men Choose VigRX Plus®",
+        title: "Why VigRX Plus® Stands Out",
         ordering: 20,
         settings: { columns: 3 },
         contents: [
-          { category: "🌿", title: "Natural & Safe", body: "Time-tested botanicals like Korean Red Ginseng and Hawthorn Berry — no prescription required.", links: ["official"] },
-          { category: "📈", title: "Clinically Studied", body: "In a controlled study, the majority of participants reported firmer, more lasting erections and greater satisfaction.", links: ["official"] },
-          { category: "⏱️", title: "Results in 60 Days", body: "Most users notice meaningful change within the first 60 days of daily use.", links: ["official"] },
+          { category: "🌿", title: "Natural & Safe", body: "Time-tested botanicals like Korean Red Ginseng and Hawthorn Berry — no prescription required.", cta_text: "Get VigRX Plus®", links: ["official"] },
+          { category: "📈", title: "Clinically Studied", body: "In a double-blind study, 62% reported improved erection quality and 71% greater sexual satisfaction.", cta_text: "Get VigRX Plus®", links: ["official"] },
+          { category: "⏱️", title: "Results in 60 Days", body: "Most users notice meaningful change within the first 60 days of daily use.", cta_text: "Get VigRX Plus®", links: ["official"] },
         ],
       },
       {
         block_type: "slider",
-        title: "What Customers Say",
+        title: "What Customers Are Saying",
         ordering: 30,
         settings: {},
         contents: [
-          { category: "testimonial", title: STAR, body: '"Within two months I felt like myself again — my wife noticed too." — James R., 47', links: [] },
-          { category: "testimonial", title: STAR, body: '"Best decision I made this year. No side effects, just results." — Marcus T., 52', links: [] },
-          { category: "testimonial", title: STAR, body: '"The guarantee made it an easy yes. Glad I tried it." — David L., 41', links: [] },
+          { category: "testimonial", title: STAR, body: '"Within two months I felt like myself again — and my wife noticed too. The 67-day guarantee made saying yes easy." — James R., 47', links: [] },
+          { category: "testimonial", title: STAR, body: '"Best decision I made this year. Steadier performance, no side effects, just real results." — Marcus T., 52', links: [] },
+          { category: "testimonial", title: STAR, body: '"I was on the fence, but the money-back guarantee made it a no-brainer. Glad I tried it." — David L., 41', links: [] },
         ],
       },
       {
@@ -120,7 +122,7 @@ const TEMPLATES = {
         ordering: 50,
         settings: {},
         contents: [
-          { title: "Save 25% + 67-Day Guarantee", body: "Order today and lock in our best price plus a full 67-day money-back guarantee. Try it completely risk-free.", cta_text: "Claim Discount", category: "offer", links: ["promo"] },
+          { title: "⏳ Limited-Time: Save 25% + 67-Day Guarantee", body: "For a limited time, order today to lock in our best price — 25% off plus a full 67-day money-back guarantee. Try it completely risk-free; if it's not for you, return even empty boxes for a full refund.", cta_text: "Lock In 25% Off + Free Shipping", category: "offer", links: ["promo"] },
         ],
       },
       {
@@ -152,22 +154,34 @@ const TEMPLATES = {
         title: "Hero",
         ordering: 10,
         settings: {
-          heading: "Get Your Free VigRX Plus® Guide",
+          heading: "Get the Free VigRX Plus® Guide + Your Private 25% Discount",
           subheading:
-            "Discover how thousands of men naturally boost stamina and confidence — and claim an exclusive discount.",
-          cta_label: "Get the Free Guide",
+            "Join 1,200+ men who used this natural stamina protocol — and unlock a discount code you won't find anywhere else.",
+          cta_label: "Get My Free Guide",
           rating: "Join 1,200+ men who already did",
-          badges: ["Free Guide", "Exclusive Discount", "No Spam"],
+          badges: ["100% Free", "Private Discount Code", "No Spam — Ever"],
         },
         contents: [
           {
-            title: "Free Starter Guide",
-            body: "Enter your details to receive the guide and a one-time discount code.",
+            title: "Your free vitality kit",
+            body: "We'll email your complete guide plus a private discount code the moment you join.",
             image_url: IMG.man,
-            cta_text: "Send My Guide",
+            cta_text: "Get My Free Guide",
             category: "hero",
-            links: ["official"],
+            links: ["scroll"],
           },
+        ],
+      },
+      {
+        block_type: "grid",
+        title: "What's Inside Your Free Guide",
+        ordering: 15,
+        settings: { columns: 2 },
+        contents: [
+          { category: "🌿", title: "The 7-Day Stamina Protocol", body: "The exact daily routine 1,200+ men followed to feel a real difference in about two months — no prescriptions, no guesswork.", links: [] },
+          { category: "🔬", title: "The 3 Ingredients That Do the Work", body: "What the clinical study actually found about the herbal blend — and why it beats random gas-station supplements.", links: [] },
+          { category: "🎯", title: "Your Private 25% Discount Code", body: "A one-time code sent straight to your inbox that beats anything on the open market.", links: [] },
+          { category: "🛡️", title: "How to Avoid Counterfeits", body: "The #1 mistake buyers make — and the only place that ships the authentic formula with the 67-day guarantee.", links: [] },
         ],
       },
       {
@@ -176,7 +190,7 @@ const TEMPLATES = {
         ordering: 20,
         settings: {},
         contents: [
-          { title: "Common signs", body: "• Low energy and drive  • Inconsistent performance  • Less confidence in the bedroom  • Avoiding intimacy", category: "problem", links: [] },
+          { title: "You're not alone", body: "• You avoid intimacy because you're not 100% confident  • Performance is inconsistent, no matter the moment  • You feel your drive slipping as the weeks go by  • You've tried 'something' but saw nothing change", category: "problem", links: [] },
         ],
       },
       {
@@ -185,20 +199,24 @@ const TEMPLATES = {
         ordering: 30,
         settings: { columns: 3 },
         contents: [
-          { category: "⚡", title: "More Energy", body: "Feel driven and present throughout the day.", links: [] },
-          { category: "🔥", title: "Stronger Drive", body: "Reignite desire with balanced, natural support.", links: [] },
-          { category: "🛡️", title: "Proven Formula", body: "Backed by a clinical study and 20+ years on the market.", links: [] },
+          { category: "⚡", title: "More Energy", body: "Show up present and driven from the moment you wake up.", links: [] },
+          { category: "🔥", title: "Stronger Drive", body: "Reignite desire with balanced, natural support — no prescriptions required.", links: [] },
+          { category: "🛡️", title: "Proven & Private", body: "Backed by a clinical study and 20+ years on the market. Your info stays yours.", links: [] },
         ],
       },
       {
         block_type: "lead_form",
-        title: "Claim Your Exclusive Discount",
+        title: "Claim Your Free Guide + 25% Discount",
         ordering: 40,
         settings: {
-          title: "Claim Your Exclusive Discount",
-          subtitle: "Get the free guide plus a private discount code sent straight to your email.",
-          cta_label: "Get My Discount",
+          anchor: "lead-form",
+          urgency: "Discount slots are limited — claim yours before they reset",
+          title: "Claim Your Free Guide + 25% Discount",
+          subtitle:
+            "Enter your email and we'll send your complete guide plus your private 25% discount code instantly. Your email stays private — unsubscribe anytime.",
+          cta_label: "Send My Free Guide + Discount",
           redirect_url: "https://example.com/vigrx-plus",
+          trust: ["🔒 Privacy Protected", "✅ 100% Free", "⚡ Instant Delivery"],
         },
         contents: [],
       },
@@ -208,8 +226,21 @@ const TEMPLATES = {
         ordering: 50,
         settings: {},
         contents: [
-          { category: "testimonial", title: STAR, body: '"The free guide answered questions I was too embarrassed to ask." — Chris M., 39', links: [] },
-          { category: "testimonial", title: STAR, body: '"Got my discount the same day. Easy process." — Brian K., 44', links: [] },
+          { category: "testimonial", title: STAR, body: '"I downloaded the guide on a Tuesday and had my discount code in my inbox before lunch. Two months in, I finally feel like myself again." — Chris M., 39', links: [] },
+          { category: "testimonial", title: STAR, body: '"I was skeptical, but the protocol was simple and the results were real. The private discount saved me a ton." — Brian K., 44', links: [] },
+          { category: "testimonial", title: STAR, body: '"The guide explained the ingredients better than any doctor I\'d seen. Wish I\'d found it sooner." — Marcus T., 51', links: [] },
+        ],
+      },
+      {
+        block_type: "single_column",
+        title: "Frequently Asked Questions",
+        ordering: 60,
+        settings: {},
+        contents: [
+          { title: "Is the guide really free?", body: "Yes. The guide and your private discount code are 100% free. We only earn if you later choose to order through our link — at no extra cost to you.", links: [] },
+          { title: "Will I get spammed?", body: "Never. Your email is used only to send your guide and discount code. One click to unsubscribe, and we never sell or share your data.", links: [] },
+          { title: "How fast will I get it?", body: "Instantly. The guide and discount code are emailed the moment you join — check your inbox (and spam folder) right after you hit send.", links: [] },
+          { title: "Is VigRX Plus® legit?", body: "It's been on the market 20+ years with a clinical study behind it. Authenticity and the 67-day guarantee are honored only through the official source we link to.", links: [] },
         ],
       },
       {
@@ -233,7 +264,7 @@ const TEMPLATES = {
           heading: "Honest VigRX Plus® Review",
           subheading:
             "An unbiased look at the pros, cons, ingredients, and clinical proof — rated 4.8/5 by verified buyers.",
-          cta_label: "See the Best Price",
+          cta_label: "See Today's Best Price",
           rating: "4.8/5 · 1,200+ reviews",
           badges: ["Unbiased Review", "Clinical Proof", "67-Day Guarantee"],
         },
@@ -242,7 +273,7 @@ const TEMPLATES = {
             title: "Rated 4.8/5",
             body: "Based on thousands of verified buyer reviews.",
             image_url: IMG.product,
-            cta_text: "See the Best Price",
+            cta_text: "See Today's Best Price",
             category: "hero",
             links: ["official"],
           },
@@ -279,12 +310,23 @@ const TEMPLATES = {
         ],
       },
       {
+        block_type: "slider",
+        title: "What Buyers Are Saying",
+        ordering: 45,
+        settings: {},
+        contents: [
+          { category: "testimonial", title: STAR, body: '"I read a dozen reviews before buying. The clinical backing and 67-day guarantee sold me — and it delivered." — Robert H., 53', links: [] },
+          { category: "testimonial", title: STAR, body: '"Finally a supplement that does what the label says. Steadier, stronger, no weird side effects." — Daniel K., 48', links: [] },
+          { category: "testimonial", title: STAR, body: '"Wish I\'d started sooner. The guarantee meant there was nothing to lose." — Eric M., 44', links: [] },
+        ],
+      },
+      {
         block_type: "single_column",
         title: "Guarantee & Where to Buy",
         ordering: 50,
         settings: {},
         contents: [
-          { title: "Buy from the official source", body: "To get the authentic product and the full 67-day guarantee, order only from the official site. Avoid marketplaces with counterfeits.", cta_text: "Order from Official", category: "offer", links: ["official"] },
+          { title: "Buy from the official source", body: "⏳ For a limited time, order from the official site to lock in the best price and the full 67-day guarantee — and avoid marketplaces selling counterfeits.", cta_text: "Order from Official", category: "offer", links: ["official"] },
         ],
       },
       {
@@ -295,6 +337,8 @@ const TEMPLATES = {
         contents: [
           { title: "Is it legit?", body: "VigRX Plus® has been on the market for over 20 years with a clinical study behind it. Authenticity is guaranteed only via the official store.", links: [] },
           { title: "Are there side effects?", body: "It uses common herbal ingredients and is generally well tolerated. Discontinue use if you experience discomfort and consult a physician.", links: [] },
+          { title: "How fast will I see results?", body: "Most users notice meaningful change within 30–60 days of consistent daily use. For best results, commit to at least 60 days.", links: [] },
+          { title: "Is it FDA approved?", body: "Like all dietary supplements, it is not evaluated by the FDA for treating disease. It is manufactured in a cGMP-certified facility in the USA for quality and consistency.", links: [] },
         ],
       },
       {
@@ -318,7 +362,7 @@ const TEMPLATES = {
           heading: "My 60-Day VigRX Plus® Journey",
           subheading:
             "From quiet doubt to real confidence — the story thousands of men recognize, and how it can change for you too.",
-          cta_label: "Read the Full Story",
+          cta_label: "Read The Full 60-Day Story",
           rating: "A story 1,200+ men relate to",
           badges: ["Real Story", "No Embarrassment", "67-Day Guarantee"],
         },
@@ -327,7 +371,7 @@ const TEMPLATES = {
             title: "The turning point",
             body: "What finally pushed me to try a natural approach — and what happened next.",
             image_url: IMG.man,
-            cta_text: "Read the Full Story",
+            cta_text: "Read The Full 60-Day Story",
             category: "hero",
             links: ["official"],
           },
@@ -359,8 +403,9 @@ const TEMPLATES = {
         ordering: 40,
         settings: {},
         contents: [
-          { category: "testimonial", title: STAR, body: '"This is basically my story. Finally something that worked." — Anthony S., 46', links: [] },
-          { category: "testimonial", title: STAR, body: '"I sent it to my brother. We both ordered." — Kevin P., 50', links: [] },
+          { category: "testimonial", title: STAR, body: '"This is basically my story. Two months in, finally something that worked — and my partner noticed." — Anthony S., 46', links: [] },
+          { category: "testimonial", title: STAR, body: '"I sent it to my brother. We both ordered, and we both stuck with it." — Kevin P., 50', links: [] },
+          { category: "testimonial", title: STAR, body: '"The 60-day timeline in the story is real. I gave it the full two months and it paid off." — Tomas B., 43', links: [] },
         ],
       },
       {
@@ -369,7 +414,7 @@ const TEMPLATES = {
         ordering: 50,
         settings: {},
         contents: [
-          { title: "Start your own 60 days", body: "The same natural formula, the same 67-day guarantee. Begin your story today.", cta_text: "Claim Discount", category: "offer", links: ["promo"] },
+          { title: "Start your own 60 days", body: "⏳ For a limited time, begin your 60-day trial with the same natural formula and full 67-day guarantee — at our best price. Your story can start today.", cta_text: "Start My 60-Day Trial", category: "offer", links: ["promo"] },
         ],
       },
       {
@@ -380,6 +425,7 @@ const TEMPLATES = {
         contents: [
           { title: "Do I need a prescription?", body: "No. VigRX Plus® is an herbal supplement available without a prescription from the official site.", links: [] },
           { title: "How do I know it's authentic?", body: "Order only through the official store to guarantee the genuine formula and the 67-day money-back promise.", links: [] },
+          { title: "How fast will I see results?", body: "Most users notice meaningful change within 30–60 days of consistent daily use. The 60-day trial in the story reflects real-world timing.", links: [] },
         ],
       },
       {
@@ -403,7 +449,7 @@ const TEMPLATES = {
           heading: "VigRX Plus® vs The Rest",
           subheading:
             "An objective comparison before you decide — see why VigRX Plus® stands apart from generic alternatives.",
-          cta_label: "See the Comparison",
+          cta_label: "See The Full Comparison",
           rating: "The clear winner in our test",
           badges: ["Objective", "Clinically Studied", "67-Day Guarantee"],
         },
@@ -412,7 +458,7 @@ const TEMPLATES = {
             title: "Side-by-side",
             body: "How VigRX Plus® compares to typical alternatives.",
             image_url: IMG.product,
-            cta_text: "See the Comparison",
+            cta_text: "See The Full Comparison",
             category: "hero",
             links: ["official"],
           },
@@ -434,7 +480,7 @@ const TEMPLATES = {
         ordering: 30,
         settings: {},
         contents: [
-          { title: "The clear winner", body: "For results you can stand behind, choose the formula with clinical backing and a real 67-day guarantee. Order only from the official source.", cta_text: "Order the Winner", category: "offer", links: ["official"] },
+          { title: "The clear winner", body: "⏳ For a limited time, choose the formula with clinical backing and a real 67-day guarantee — and order only from the official source to get the best price and avoid counterfeits.", cta_text: "Order the Winner", category: "offer", links: ["official"] },
         ],
       },
       {
@@ -444,6 +490,8 @@ const TEMPLATES = {
         settings: {},
         contents: [
           { title: "Why not just buy the cheapest?", body: "Counterfeit and under-dosed products are common. The official store is the only place that honors the clinical formula and the 67-day guarantee.", links: [] },
+          { title: "Is VigRX Plus® safe?", body: "It uses well-known herbal ingredients and is made in a cGMP-certified facility in the USA. Consult your doctor if you have a medical condition or take medication.", links: [] },
+          { title: "How fast will I see results?", body: "Most users report changes within 30–60 days of consistent daily use. For best results, use for at least 60 days.", links: [] },
         ],
       },
       {
@@ -459,10 +507,24 @@ const TEMPLATES = {
 
 async function main() {
   // pastikan link affiliate VigRX ada
+  const KEEP = [LINKS.official, LINKS.promo, LINKS.scroll];
+  // bersihkan link orphan (tidak dipakai) agar tidak bentrok constraint UNIQUE tracking_id
+  const { data: orphans } = await admin
+    .from("links")
+    .select("id")
+    .not("id", "in", `(${KEEP.map((id) => `"${id}"`).join(",")})`);
+  if (orphans?.length) {
+    const ids = orphans.map((o) => o.id);
+    await admin.from("content_links").delete().in("link_id", ids);
+    await admin.from("links").delete().in("id", ids);
+    console.log(`✓ hapus ${ids.length} orphan link`);
+  }
+
   await admin.from("links").upsert(
     [
       { id: LINKS.official, label: "VigRX Official", url: "https://example.com/vigrx-plus", tracking_id: "VGRX_OFFICIAL" },
       { id: LINKS.promo, label: "VigRX Discount", url: "https://example.com/vigrx-plus", tracking_id: "VGRX_PROMO" },
+      { id: LINKS.scroll, label: "Scroll to form", url: "#lead-form", tracking_id: "SCROLL_FORM" },
     ],
     { onConflict: "id" }
   );
