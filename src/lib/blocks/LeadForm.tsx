@@ -29,25 +29,25 @@ export default function LeadForm({ section }: { section: SectionWithContents }) 
       }
     } catch {
       setStatus("error");
-      setMsg("Gagal mengirim. Coba lagi.");
+      setMsg("Something went wrong. Please try again.");
     }
   }
 
   return (
     <section className="section">
       <div className="container single-column" style={{ maxWidth: 560 }}>
-        <h2 className="section-title">{s.title || "Dapatkan Info Eksklusif"}</h2>
+        <h2 className="section-title">{s.title || "Get Exclusive Info"}</h2>
         {s.subtitle && (
           <p style={{ textAlign: "center", color: "#64748b" }}>{s.subtitle}</p>
         )}
         {status === "done" && !s.redirect_url ? (
           <p className="dash-card" style={{ textAlign: "center" }}>
-            Terima kasih! Tim kami akan segera menghubungi Anda.
+            Thank you! Our team will reach out shortly.
           </p>
         ) : (
           <form onSubmit={onSubmit} className="form">
             <input
-              placeholder="Nama"
+              placeholder="Full Name"
               value={name}
               onChange={(e) => setName(e.target.value)}
               required
@@ -60,7 +60,7 @@ export default function LeadForm({ section }: { section: SectionWithContents }) 
               required
             />
             <input
-              placeholder="No. WhatsApp"
+              placeholder="Phone (optional)"
               value={phone}
               onChange={(e) => setPhone(e.target.value)}
             />
@@ -69,7 +69,7 @@ export default function LeadForm({ section }: { section: SectionWithContents }) 
               type="submit"
               disabled={status === "sending"}
             >
-              {s.cta_label || "Kirim"}
+              {s.cta_label || "Submit"}
             </button>
             {status === "error" && <p className="error">{msg}</p>}
           </form>

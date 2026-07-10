@@ -10,9 +10,9 @@ export async function generateMetadata(): Promise<Metadata> {
   const hero = sections.find((s) => s.block_type === "hero")?.contents[0];
 
   const title =
-    hero?.og_title || hero?.title || settings?.default_title || "Dynamic Template";
+    hero?.og_title || hero?.title || settings?.default_title || "VigRX Plus® — Male Vitality";
   const description =
-    hero?.og_description || hero?.body || settings?.default_description || "";
+    hero?.og_description || hero?.body || settings?.default_description || "Clinically studied herbal male vitality supplement.";
   const url = settings?.site_url || undefined;
 
   return {

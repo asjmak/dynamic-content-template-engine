@@ -149,11 +149,11 @@ await admin.from("leads").delete().eq("email", "verify@example.com");
 // ---------- 5 template render ----------
 console.log("\n== 5 TEMPLATE RENDER (/ + switch active_template) ==");
 const checks = {
-  "classic-sales": ["VigRX Plus", "Mengapa VigRX"],
-  "lead-gen": ["Klaim Diskon", "Dapatkan Panduan"],
-  "modern-review": ["Review Jujur", "Kontra"],
-  "long-form": ["Cerita di Balik", "Manfaat Nyata"],
-  "comparison": ["vs Lainnya", "Pemenangnya"],
+  "classic-sales": ["VigRX Plus", "Why Men Choose"],
+  "lead-gen": ["Free VigRX Plus", "Experiencing"],
+  "modern-review": ["Honest VigRX", "Cons"],
+  "long-form": ["60-Day VigRX", "Where It Started"],
+  "comparison": ["vs The Rest", "Head to Head"],
 };
 let allTpl = true;
 for (const [tpl, kws] of Object.entries(checks)) {

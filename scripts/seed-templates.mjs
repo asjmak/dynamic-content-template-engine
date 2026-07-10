@@ -1,10 +1,11 @@
 // =====================================================================
-//  Seed 3 template landing page (demo produk: VigRX Plus)
+//  Seed 5 template landing page (produk: VigRX Plus) - konten BAHASA INGGRIS,
+//  unik per template, target pasar USA. Idempoten & reset penuh.
 //  Jalankan:  node scripts/seed-templates.mjs
 //  Butuh: NEXT_PUBLIC_SUPABASE_URL + SUPABASE_SERVICE_ROLE_KEY di .env.local
-//  Idempoten: pakai upsert berdasarkan id tetap.
 // =====================================================================
 import fs from "node:fs";
+import { createHash } from "node:crypto";
 import { createClient } from "@supabase/supabase-js";
 
 function loadEnv(file) {
@@ -14,10 +15,7 @@ function loadEnv(file) {
     const m = line.match(/^\s*([\w.-]+)\s*=\s*(.*)\s*$/);
     if (!m) continue;
     let val = m[2].trim();
-    if (
-      (val.startsWith('"') && val.endsWith('"')) ||
-      (val.startsWith("'") && val.endsWith("'"))
-    )
+    if ((val.startsWith('"') && val.endsWith('"')) || (val.startsWith("'") && val.endsWith("'")))
       val = val.slice(1, -1);
     if (!(m[1] in process.env)) process.env[m[1]] = val;
   }
@@ -33,398 +31,426 @@ if (!URL || !SERVICE) {
 }
 const admin = createClient(URL, SERVICE, { auth: { persistSession: false } });
 
+// UUID deterministik (v3, RFC 4122) dari sebuah key -> id stabil & unik per template.
+function uuid(key) {
+  const h = createHash("md5").update(key).digest("hex");
+  return `${h.slice(0, 8)}-${h.slice(8, 12)}-3${h.slice(13, 16)}-8${h.slice(16, 19)}-${h.slice(20, 32)}`;
+}
+
 const LINKS = {
-  official: "cccccccc-cccc-cccc-cccc-cccccccccccc",
+  official: "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa",
   promo: "bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb",
-  main: "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa",
 };
 
 const IMG = {
-  product: "https://images.unsplash.com/photo-1556228720-195a672e8a03?w=600",
-  man: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=600",
-  herbs: "https://images.unsplash.com/photo-1518611012118-696072aa579a?w=600",
+  product: "https://images.unsplash.com/photo-1556228720-195a672e8a03?w=700&q=80",
+  man: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=900&q=80",
+  herbs: "https://images.unsplash.com/photo-1518611012118-696072aa579a?w=900&q=80",
 };
 
-// ---------------------- TEMPLATES ----------------------
+const DISCLAIMER =
+  "© 2026 VigRX Plus Affiliate Demo. Statements have not been evaluated by the FDA. " +
+  "This product is not intended to diagnose, treat, cure, or prevent any disease. " +
+  "Individual results vary. Affiliate disclosure: we may earn a commission.";
+
+const STAR = "★★★★★";
+
+// ===================== TEMPLATES (tanpa id; di-generate saat insert) =====================
 const TEMPLATES = {
+  // ---------------------------------------------------------------- CLASSIC SALES
   "classic-sales": {
     sections: [
       {
-        id: "11111111-1111-1111-1111-111111111111",
         block_type: "hero",
         title: "Hero",
         ordering: 10,
         settings: {
-          heading: "VigRX Plus™ — Vitalitas Pria #1 Dunia",
+          heading: "VigRX Plus® — Doctor-Endorsed Male Vitality",
           subheading:
-            "Formula alami teruji klinis untuk performa & stamina lebih baik dalam 60 hari.",
-          cta_label: "Pesan Sekarang",
+            "A clinically studied herbal formula for stronger, longer-lasting performance — backed by a 67-day money-back guarantee.",
+          cta_label: "Order VigRX Plus",
+          rating: "4.8/5 from 1,200+ verified buyers",
+          badges: ["Clinically Studied", "67-Day Guarantee", "Made in USA"],
         },
         contents: [
           {
-            id: "61111111-1111-1111-1111-111111111111",
-            title: "VigRX Plus™",
-            body: "Dapatkan hasil nyata dengan garansi uang kembali 67 hari.",
+            title: "VigRX Plus®",
+            body: "Try it risk-free with our full 67-day money-back guarantee.",
             image_url: IMG.product,
-            cta_text: "Pesan Sekarang",
-            ordering: 1,
+            cta_text: "Order Now",
+            category: "hero",
             links: ["official"],
           },
         ],
       },
       {
-        id: "22222222-2222-2222-2222-222222222222",
         block_type: "grid",
-        title: "Mengapa VigRX Plus?",
+        title: "Why Men Choose VigRX Plus®",
         ordering: 20,
         settings: { columns: 3 },
         contents: [
-          { id: "c1111111-1111-1111-1111-111111111111", title: "Alami & Aman", body: "Terdiri dari ekstrak herbal berkualitas tinggi, tanpa resep.", ordering: 1, links: ["official"] },
-          { id: "c2222222-1111-1111-1111-111111111111", title: "Teruji Klinis", body: "Studi menunjukkan peningkatan performa yang signifikan.", ordering: 2, links: ["official"] },
-          { id: "c3333333-1111-1111-1111-111111111111", title: "Hasil 60 Hari", body: "Ribuan pria merasakan perbedaan nyata.", ordering: 3, links: ["official"] },
+          { category: "🌿", title: "Natural & Safe", body: "Time-tested botanicals like Korean Red Ginseng and Hawthorn Berry — no prescription required.", links: ["official"] },
+          { category: "📈", title: "Clinically Studied", body: "In a controlled study, the majority of participants reported firmer, more lasting erections and greater satisfaction.", links: ["official"] },
+          { category: "⏱️", title: "Results in 60 Days", body: "Most users notice meaningful change within the first 60 days of daily use.", links: ["official"] },
         ],
       },
       {
-        id: "d1111111-1111-1111-1111-111111111111",
         block_type: "slider",
-        title: "Apa Kata Mereka",
+        title: "What Customers Say",
         ordering: 30,
         settings: {},
         contents: [
-          { id: "t1111111-1111-1111-1111-111111111111", title: "★★★★★", body: '"Stamina saya kembali seperti 10 tahun lalu." — Budi, 42', ordering: 1, links: [] },
-          { id: "t2222222-1111-1111-1111-111111111111", title: "★★★★★", body: '"Sangat puas dengan hasilnya." — Andre, 38', ordering: 2, links: [] },
-          { id: "t3333333-1111-1111-1111-111111111111", title: "★★★★★", body: '"Garansi membuat saya berani mencoba." — Rian, 45', ordering: 3, links: [] },
+          { category: "testimonial", title: STAR, body: '"Within two months I felt like myself again — my wife noticed too." — James R., 47', links: [] },
+          { category: "testimonial", title: STAR, body: '"Best decision I made this year. No side effects, just results." — Marcus T., 52', links: [] },
+          { category: "testimonial", title: STAR, body: '"The guarantee made it an easy yes. Glad I tried it." — David L., 41', links: [] },
         ],
       },
       {
-        id: "d2222222-1111-1111-1111-111111111111",
         block_type: "single_column",
-        title: "Cara Kerja",
+        title: "How It Works",
         ordering: 40,
         settings: {},
         contents: [
-          { id: "w1111111-1111-1111-1111-111111111111", title: "3 Langkah Mudah", body: "1) Konsumsi 2 kapsul/hari. 2) Perbanyak air & olahraga rutin. 3) Nikmati hasil dalam 60 hari.", ordering: 1, links: [] },
+          { title: "Triple-Action Support", body: "VigRX Plus® supports healthy blood flow, helps balance key hormones, and boosts daily energy — so performance improves naturally. Recommended use: 2 capsules daily with water.", links: [] },
         ],
       },
       {
-        id: "d3333333-1111-1111-1111-111111111111",
         block_type: "single_column",
-        title: "Penawaran & Garansi",
+        title: "Limited-Time Offer",
         ordering: 50,
         settings: {},
         contents: [
-          { id: "o1111111-1111-1111-1111-111111111111", title: "Diskon 25% + Garansi 67 Hari", body: "Pesan hari ini dan dapatkan garansi uang kembali 67 hari, tanpa pertanyaan.", cta_text: "Klaim Diskon", ordering: 1, links: ["promo"] },
+          { title: "Save 25% + 67-Day Guarantee", body: "Order today and lock in our best price plus a full 67-day money-back guarantee. Try it completely risk-free.", cta_text: "Claim Discount", category: "offer", links: ["promo"] },
         ],
       },
       {
-        id: "d4444444-1111-1111-1111-111111111111",
         block_type: "single_column",
-        title: "Pertanyaan Umum",
+        title: "Frequently Asked Questions",
         ordering: 60,
         settings: {},
         contents: [
-          { id: "q1111111-1111-1111-1111-111111111111", title: "Apakah aman?", body: "Terdiri dari bahan alami; konsultasikan dokter jika punya kondisi medis tertentu.", ordering: 1, links: [] },
-          { id: "q2222222-1111-1111-1111-111111111111", title: "Berapa lama sampai hasil?", body: "Biasanya terasa dalam 30–60 hari pemakaian rutin.", ordering: 2, links: [] },
+          { title: "Is it safe?", body: "VigRX Plus® uses well-known herbal ingredients and is made in a cGMP-certified facility in the USA. Consult your doctor if you have a medical condition or take medication.", links: [] },
+          { title: "How fast will I see results?", body: "Many users report changes within 30–60 days of consistent daily use. For best results, use for at least 60 days.", links: [] },
+          { title: "What if it doesn't work for me?", body: "You're covered by a 67-day money-back guarantee. Return even empty boxes for a full refund — no questions asked.", links: [] },
         ],
       },
       {
-        id: "33333333-3333-3333-3333-333333333333",
         block_type: "footer",
         title: "Footer",
         ordering: 100,
-        settings: { text: "© 2026 Demo VigRX Plus — Promosi afiliasi. Bukan nasihat medis." },
+        settings: { text: DISCLAIMER },
         contents: [],
       },
     ],
   },
 
+  // ---------------------------------------------------------------- LEAD GEN
   "lead-gen": {
     sections: [
       {
-        id: "e1111111-1111-1111-1111-111111111111",
         block_type: "hero",
         title: "Hero",
         ordering: 10,
         settings: {
-          heading: "Dapatkan Panduan Gratis VigRX Plus™",
-          subheading: "Pelajari cara meningkatkan vitalitas secara alami — langsung dari ahlinya.",
-          cta_label: "Klaim Panduan",
+          heading: "Get Your Free VigRX Plus® Guide",
+          subheading:
+            "Discover how thousands of men naturally boost stamina and confidence — and claim an exclusive discount.",
+          cta_label: "Get the Free Guide",
+          rating: "Join 1,200+ men who already did",
+          badges: ["Free Guide", "Exclusive Discount", "No Spam"],
         },
         contents: [
-          { id: "5a111111-1111-1111-1111-111111111111", title: "Panduan Gratis", body: "Isi data untuk menerima panduan & penawaran terbatas.", image_url: IMG.man, cta_text: "Klaim Sekarang", ordering: 1, links: ["official"] },
+          {
+            title: "Free Starter Guide",
+            body: "Enter your details to receive the guide and a one-time discount code.",
+            image_url: IMG.man,
+            cta_text: "Send My Guide",
+            category: "hero",
+            links: ["official"],
+          },
         ],
       },
       {
-        id: "e2222222-1111-1111-1111-111111111111",
         block_type: "single_column",
-        title: "Apakah Anda Mengalami?",
+        title: "Are You Experiencing This?",
         ordering: 20,
         settings: {},
         contents: [
-          { id: "lp111111-1111-1111-1111-111111111111", title: "Tanda-tanda umum", body: "• Energi menurun • Kurang percaya diri • Performa tidak konsisten", ordering: 1, links: [] },
+          { title: "Common signs", body: "• Low energy and drive  • Inconsistent performance  • Less confidence in the bedroom  • Avoiding intimacy", category: "problem", links: [] },
         ],
       },
       {
-        id: "e3333333-1111-1111-1111-111111111111",
         block_type: "grid",
-        title: "Manfaat Utama",
+        title: "What You'll Gain",
         ordering: 30,
         settings: { columns: 3 },
         contents: [
-          { id: "5c111111-1111-1111-1111-111111111111", title: "Stamina", body: "Daya tahan lebih prima sepanjang hari.", ordering: 1, links: [] },
-          { id: "5c222222-1111-1111-1111-111111111111", title: "Kenyamanan", body: "Komposisi alami, mudah dikonsumsi.", ordering: 2, links: [] },
-          { id: "5c333333-1111-1111-1111-111111111111", title: "Terbukti", body: "Didukung ulasan pengguna nyata.", ordering: 3, links: [] },
+          { category: "⚡", title: "More Energy", body: "Feel driven and present throughout the day.", links: [] },
+          { category: "🔥", title: "Stronger Drive", body: "Reignite desire with balanced, natural support.", links: [] },
+          { category: "🛡️", title: "Proven Formula", body: "Backed by a clinical study and 20+ years on the market.", links: [] },
         ],
       },
       {
-        id: "e4444444-1111-1111-1111-111111111111",
         block_type: "lead_form",
-        title: "Klaim Diskon Eksklusif",
+        title: "Claim Your Exclusive Discount",
         ordering: 40,
         settings: {
-          title: "Klaim Diskon Eksklusif",
-          subtitle: "Isi data, dapatkan panduan & penawaran terbatas langsung ke WA Anda.",
-          cta_label: "Dapatkan Sekarang",
+          title: "Claim Your Exclusive Discount",
+          subtitle: "Get the free guide plus a private discount code sent straight to your email.",
+          cta_label: "Get My Discount",
           redirect_url: "https://example.com/vigrx-plus",
         },
         contents: [],
       },
       {
-        id: "e5555555-1111-1111-1111-111111111111",
         block_type: "slider",
-        title: "Testimoni",
+        title: "Real Stories",
         ordering: 50,
         settings: {},
         contents: [
-          { id: "5d111111-1111-1111-1111-111111111111", title: "★★★★★", body: '"Akhirnya nemu solusi yang works." — Sandi, 40', ordering: 1, links: [] },
-          { id: "5d222222-1111-1111-1111-111111111111", title: "★★★★★", body: '"CS ramah & proses mudah." — Tono, 37', ordering: 2, links: [] },
+          { category: "testimonial", title: STAR, body: '"The free guide answered questions I was too embarrassed to ask." — Chris M., 39', links: [] },
+          { category: "testimonial", title: STAR, body: '"Got my discount the same day. Easy process." — Brian K., 44', links: [] },
         ],
       },
       {
-        id: "e6666666-1111-1111-1111-111111111111",
         block_type: "footer",
         title: "Footer",
         ordering: 100,
-        settings: { text: "© 2026 Demo VigRX Plus — Promosi afiliasi." },
+        settings: { text: DISCLAIMER },
         contents: [],
       },
     ],
   },
 
+  // ---------------------------------------------------------------- MODERN REVIEW
   "modern-review": {
     sections: [
       {
-        id: "f1111111-1111-1111-1111-111111111111",
         block_type: "hero",
         title: "Hero",
         ordering: 10,
         settings: {
-          heading: "Review Jujur VigRX Plus™",
-          subheading: "Rating 4.8/5 dari ribuan pengguna. Simak pro, kontra, & cara kerjanya.",
-          cta_label: "Cek Penawaran",
+          heading: "Honest VigRX Plus® Review",
+          subheading:
+            "An unbiased look at the pros, cons, ingredients, and clinical proof — rated 4.8/5 by verified buyers.",
+          cta_label: "See the Best Price",
+          rating: "4.8/5 · 1,200+ reviews",
+          badges: ["Unbiased Review", "Clinical Proof", "67-Day Guarantee"],
         },
         contents: [
-          { id: "mh111111-1111-1111-1111-111111111111", title: "Rating 4.8/5", body: "Berdasarkan ulasan pengguna terverifikasi.", image_url: IMG.product, cta_text: "Cek Penawaran", ordering: 1, links: ["official"] },
+          {
+            title: "Rated 4.8/5",
+            body: "Based on thousands of verified buyer reviews.",
+            image_url: IMG.product,
+            cta_text: "See the Best Price",
+            category: "hero",
+            links: ["official"],
+          },
         ],
       },
       {
-        id: "f2222222-1111-1111-1111-111111111111",
         block_type: "grid",
-        title: "Pro & Kontra",
+        title: "Pros & Cons",
         ordering: 20,
         settings: { columns: 2 },
         contents: [
-          { id: "mp111111-1111-1111-1111-111111111111", title: "Pro", body: "✓ Bahan alami ✓ Teruji klinis ✓ Garansi 67 hari", ordering: 1, links: [] },
-          { id: "mp222222-1111-1111-1111-111111111111", title: "Kontra", body: "✗ Butuh konsistensi ✓ Hanya resmi ✓ Hasil bervariasi", ordering: 2, links: [] },
+          { category: "pro", title: "Pros", body: "✓ Natural herbal blend  ✓ Clinically studied  ✓ 67-day guarantee  ✓ Made in USA (cGMP)", links: [] },
+          { category: "con", title: "Cons", body: "✗ Needs daily consistency  ✗ Sold only via official site  ✗ Results vary by person", links: [] },
         ],
       },
       {
-        id: "f3333333-1111-1111-1111-111111111111",
         block_type: "single_column",
-        title: "Cara Kerja & Komposisi",
+        title: "How It Works & What's Inside",
         ordering: 30,
         settings: {},
         contents: [
-          { id: "mw111111-1111-1111-1111-111111111111", title: "Komposisi", body: "Ekstrak tanaman tradisional yang mendukung aliran darah & hormon sehat.", ordering: 1, links: [] },
+          { title: "Key ingredients", body: "Korean Red Ginseng, Hawthorn Berry, Saw Palmetto, Ginkgo Biloba, Damiana, Tribulus Terrestris, Catuaba Bark, Muira Puama, and Bioperine® for absorption. Together they support circulation, hormone balance, and daily energy.", links: [] },
         ],
       },
       {
-        id: "f4444444-1111-1111-1111-111111111111",
         block_type: "grid",
-        title: "Hasil Survei",
+        title: "What the Study Found",
         ordering: 40,
         settings: { columns: 3 },
         contents: [
-          { id: "ms111111-1111-1111-1111-111111111111", title: "62%", body: "melaporkan peningkatan stamina", ordering: 1, links: [] },
-          { id: "ms222222-1111-1111-1111-111111111111", title: "71%", body: "puas dengan kualitas ereksi", ordering: 2, links: [] },
-          { id: "ms333333-1111-1111-1111-111111111111", title: "67 hr", body: "garansi uang kembali", ordering: 3, links: [] },
+          { category: "stat", title: "62%", body: "reported improved erection quality", links: [] },
+          { category: "stat", title: "71%", body: "reported greater sexual satisfaction", links: [] },
+          { category: "stat", title: "67 days", body: "money-back guarantee window", links: [] },
         ],
       },
       {
-        id: "f5555555-1111-1111-1111-111111111111",
         block_type: "single_column",
-        title: "Garansi & Penawaran",
+        title: "Guarantee & Where to Buy",
         ordering: 50,
         settings: {},
         contents: [
-          { id: "mo111111-1111-1111-1111-111111111111", title: "Garansi 67 Hari", body: "Pesan dari sumber resmi untuk garansi penuh.", cta_text: "Pesan Resmi", ordering: 1, links: ["official"] },
+          { title: "Buy from the official source", body: "To get the authentic product and the full 67-day guarantee, order only from the official site. Avoid marketplaces with counterfeits.", cta_text: "Order from Official", category: "offer", links: ["official"] },
         ],
       },
       {
-        id: "f6666666-1111-1111-1111-111111111111",
         block_type: "single_column",
-        title: "Pertanyaan Umum",
+        title: "Frequently Asked Questions",
         ordering: 60,
         settings: {},
         contents: [
-          { id: "mq111111-1111-1111-1111-111111111111", title: "Asli dari mana?", body: "Gunakan link resmi untuk menghindari produk palsu.", ordering: 1, links: [] },
-          { id: "mq222222-1111-1111-1111-111111111111", title: "Efek samping?", body: "Bahan alami umumnya aman; hentikan jika tidak nyaman.", ordering: 2, links: [] },
+          { title: "Is it legit?", body: "VigRX Plus® has been on the market for over 20 years with a clinical study behind it. Authenticity is guaranteed only via the official store.", links: [] },
+          { title: "Are there side effects?", body: "It uses common herbal ingredients and is generally well tolerated. Discontinue use if you experience discomfort and consult a physician.", links: [] },
         ],
       },
       {
-        id: "f7777777-1111-1111-1111-111111111111",
         block_type: "footer",
         title: "Footer",
         ordering: 100,
-        settings: { text: "© 2026 Demo VigRX Plus — Promosi afiliasi. Bukan nasihat medis." },
+        settings: { text: DISCLAIMER },
         contents: [],
       },
     ],
   },
 
+  // ---------------------------------------------------------------- LONG FORM
   "long-form": {
     sections: [
       {
-        id: "51111111-1111-1111-1111-111111111111",
         block_type: "hero",
         title: "Hero",
         ordering: 10,
         settings: {
-          heading: "Cerita di Balik VigRX Plus™",
-          subheading: "Dari keraguan menjadi percaya diri — inilah perjalanan ribuan pria.",
-          cta_label: "Baca Cerita",
+          heading: "My 60-Day VigRX Plus® Journey",
+          subheading:
+            "From quiet doubt to real confidence — the story thousands of men recognize, and how it can change for you too.",
+          cta_label: "Read the Full Story",
+          rating: "A story 1,200+ men relate to",
+          badges: ["Real Story", "No Embarrassment", "67-Day Guarantee"],
         },
         contents: [
-          { id: "5a111111-1111-1111-1111-111111111111", title: "Cerita", body: "Kenali bagaimana VigRX Plus™ membantu.", image_url: IMG.man, cta_text: "Baca Cerita", ordering: 1, links: ["official"] },
+          {
+            title: "The turning point",
+            body: "What finally pushed me to try a natural approach — and what happened next.",
+            image_url: IMG.man,
+            cta_text: "Read the Full Story",
+            category: "hero",
+            links: ["official"],
+          },
         ],
       },
       {
-        id: "52222222-1111-1111-1111-111111111111",
         block_type: "single_column",
-        title: "Awal Mula",
+        title: "Where It Started",
         ordering: 20,
         settings: {},
         contents: [
-          { id: "5b111111-1111-1111-1111-111111111111", title: "Awal Mula", body: "Banyak pria merasa malu membicarakan performa. Padahal ini wajar dan ada solusinya. VigRX Plus™ hadir sebagai jawaban alami yang bisa dipercaya.", ordering: 1, links: [] },
+          { title: "The quiet struggle", body: "Most men never talk about it, but performance anxiety is incredibly common — and it chips away at confidence in every part of life. I'd tried to ignore it until I couldn't anymore.", links: [] },
         ],
       },
       {
-        id: "53333333-1111-1111-1111-111111111111",
         block_type: "grid",
-        title: "Manfaat Nyata",
+        title: "What Changed",
         ordering: 30,
         settings: { columns: 3 },
         contents: [
-          { id: "5c111111-1111-1111-1111-111111111111", title: "Lebih Bergairah", body: "Aliran darah lebih lancar ke area vital.", ordering: 1, links: [] },
-          { id: "5c222222-1111-1111-1111-111111111111", title: "Tahan Lama", body: "Stamina & durasi meningkat.", ordering: 2, links: [] },
-          { id: "5c333333-1111-1111-1111-111111111111", title: "Lebih Percaya Diri", body: "Dampaknya terasa pada keintiman.", ordering: 3, links: [] },
+          { category: "💪", title: "More Present", body: "I felt energy and drive return week by week.", links: [] },
+          { category: "⏳", title: "Lasting", body: "Stamina and performance improved and held.", links: [] },
+          { category: "😌", title: "Confident", body: "That confidence showed up everywhere, not just the bedroom.", links: [] },
         ],
       },
       {
-        id: "54444444-1111-1111-1111-111111111111",
         block_type: "slider",
-        title: "Testimoni",
+        title: "Readers Who Relate",
         ordering: 40,
         settings: {},
         contents: [
-          { id: "5d111111-1111-1111-1111-111111111111", title: "★★★★★", body: '"Cerita saya mirip dengan banyak testimoni di sini." — Joko, 44', ordering: 1, links: [] },
-          { id: "5d222222-1111-1111-1111-111111111111", title: "★★★★★", body: '"Akhirnya berani jujur pada pasangan." — Herman, 39', ordering: 2, links: [] },
+          { category: "testimonial", title: STAR, body: '"This is basically my story. Finally something that worked." — Anthony S., 46', links: [] },
+          { category: "testimonial", title: STAR, body: '"I sent it to my brother. We both ordered." — Kevin P., 50', links: [] },
         ],
       },
       {
-        id: "55555555-1111-1111-1111-111111111111",
         block_type: "single_column",
-        title: "Penawaran Spesial",
+        title: "Your Turn",
         ordering: 50,
         settings: {},
         contents: [
-          { id: "5e111111-1111-1111-1111-111111111111", title: "Diskon Terbatas", body: "Klaim penawaran khusus bulan ini.", cta_text: "Klaim Diskon", ordering: 1, links: ["promo"] },
+          { title: "Start your own 60 days", body: "The same natural formula, the same 67-day guarantee. Begin your story today.", cta_text: "Claim Discount", category: "offer", links: ["promo"] },
         ],
       },
       {
-        id: "56666666-1111-1111-1111-111111111111",
         block_type: "single_column",
-        title: "Pertanyaan Umum",
+        title: "Frequently Asked Questions",
         ordering: 60,
         settings: {},
         contents: [
-          { id: "5f111111-1111-1111-1111-111111111111", title: "Apakah aman?", body: "Bahan alami; konsultasikan dokter bila punya kondisi medis tertentu.", ordering: 1, links: [] },
+          { title: "Do I need a prescription?", body: "No. VigRX Plus® is an herbal supplement available without a prescription from the official site.", links: [] },
+          { title: "How do I know it's authentic?", body: "Order only through the official store to guarantee the genuine formula and the 67-day money-back promise.", links: [] },
         ],
       },
       {
-        id: "57777777-1111-1111-1111-111111111111",
         block_type: "footer",
         title: "Footer",
         ordering: 100,
-        settings: { text: "© 2026 Demo VigRX Plus — Promosi afiliasi." },
+        settings: { text: DISCLAIMER },
         contents: [],
       },
     ],
   },
 
+  // ---------------------------------------------------------------- COMPARISON
   "comparison": {
     sections: [
       {
-        id: "61111111-1111-1111-1111-111111111111",
         block_type: "hero",
         title: "Hero",
         ordering: 10,
         settings: {
-          heading: "VigRX Plus™ vs Lainnya",
-          subheading: "Bandingkan sebelum memutuskan — ketahui mana yang layak.",
-          cta_label: "Lihat Perbandingan",
+          heading: "VigRX Plus® vs The Rest",
+          subheading:
+            "An objective comparison before you decide — see why VigRX Plus® stands apart from generic alternatives.",
+          cta_label: "See the Comparison",
+          rating: "The clear winner in our test",
+          badges: ["Objective", "Clinically Studied", "67-Day Guarantee"],
         },
         contents: [
-          { id: "6a111111-1111-1111-1111-111111111111", title: "Perbandingan", body: "Yuk, bandingkan secara objektif.", image_url: IMG.product, cta_text: "Lihat Perbandingan", ordering: 1, links: ["official"] },
+          {
+            title: "Side-by-side",
+            body: "How VigRX Plus® compares to typical alternatives.",
+            image_url: IMG.product,
+            cta_text: "See the Comparison",
+            category: "hero",
+            links: ["official"],
+          },
         ],
       },
       {
-        id: "62222222-1111-1111-1111-111111111111",
         block_type: "grid",
-        title: "Perbandingan",
+        title: "Head to Head",
         ordering: 20,
         settings: { columns: 2 },
         contents: [
-          { id: "6b111111-1111-1111-1111-111111111111", title: "VigRX Plus™", body: "✓ Teruji klinis ✓ Garansi 67 hari ✓ Bahan alami", ordering: 1, links: ["official"] },
-          { id: "6b222222-1111-1111-1111-111111111111", title: "Produk Lain", body: "✗ Klaim belum terbukti ✗ Garansi minim ✗ Campuran tidak jelas", ordering: 2, links: [] },
+          { category: "pro", title: "VigRX Plus®", body: "✓ Clinically studied  ✓ 67-day guarantee  ✓ Transparent herbal blend  ✓ cGMP USA facility", links: ["official"] },
+          { category: "con", title: "Generic Alternatives", body: "✗ Unproven claims  ✗ Weak or no guarantee  ✗ Unclear ingredient labels  ✗ Unknown sourcing", links: [] },
         ],
       },
       {
-        id: "63333333-1111-1111-1111-111111111111",
         block_type: "single_column",
-        title: "Verdict",
+        title: "The Verdict",
         ordering: 30,
         settings: {},
         contents: [
-          { id: "6c111111-1111-1111-1111-111111111111", title: "Pemenangnya Jelas", body: "Untuk hasil yang dapat dipertanggungjawabkan, pilih sumber resmi.", cta_text: "Pesan Resmi", ordering: 1, links: ["official"] },
+          { title: "The clear winner", body: "For results you can stand behind, choose the formula with clinical backing and a real 67-day guarantee. Order only from the official source.", cta_text: "Order the Winner", category: "offer", links: ["official"] },
         ],
       },
       {
-        id: "64444444-1111-1111-1111-111111111111",
         block_type: "single_column",
-        title: "Pertanyaan Umum",
+        title: "Frequently Asked Questions",
         ordering: 40,
         settings: {},
         contents: [
-          { id: "6d111111-1111-1111-1111-111111111111", title: "Mana yang asli?", body: "Gunakan link resmi untuk menghindari produk palsu.", ordering: 1, links: [] },
+          { title: "Why not just buy the cheapest?", body: "Counterfeit and under-dosed products are common. The official store is the only place that honors the clinical formula and the 67-day guarantee.", links: [] },
         ],
       },
       {
-        id: "65555555-1111-1111-1111-111111111111",
         block_type: "footer",
         title: "Footer",
         ordering: 100,
-        settings: { text: "© 2026 Demo VigRX Plus — Promosi afiliasi." },
+        settings: { text: DISCLAIMER },
         contents: [],
       },
     ],
@@ -433,18 +459,26 @@ const TEMPLATES = {
 
 async function main() {
   // pastikan link affiliate VigRX ada
-  await admin
-    .from("links")
-    .upsert(
-      [{ id: LINKS.official, label: "VigRX Official", url: "https://example.com/vigrx-plus", tracking_id: "VGRX_OFFICIAL" }],
-      { onConflict: "id" }
-    );
+  await admin.from("links").upsert(
+    [
+      { id: LINKS.official, label: "VigRX Official", url: "https://example.com/vigrx-plus", tracking_id: "VGRX_OFFICIAL" },
+      { id: LINKS.promo, label: "VigRX Discount", url: "https://example.com/vigrx-plus", tracking_id: "VGRX_PROMO" },
+    ],
+    { onConflict: "id" }
+  );
+
+  // Reset bersih agar tidak ada sisa konten id lama (id deterministic unik per template).
+  await admin.from("content_links").delete().neq("content_id", "00000000-0000-0000-0000-000000000000");
+  await admin.from("contents").delete().neq("id", "00000000-0000-0000-0000-000000000000");
+  await admin.from("sections").delete().neq("id", "00000000-0000-0000-0000-000000000000");
 
   for (const [tpl, def] of Object.entries(TEMPLATES)) {
-    console.log(`  ─ ${tpl}: ${def.sections?.length || 0} sections, ${(def.sections || []).reduce((a, s) => a + (s.contents || []).length, 0)} contents`);
+    let si = 0;
     for (const sec of def.sections) {
+      si += 1;
+      const secId = uuid(`${tpl}:sec:${si}`);
       await admin.from("sections").upsert({
-        id: sec.id,
+        id: secId,
         block_type: sec.block_type,
         title: sec.title,
         ordering: sec.ordering,
@@ -452,29 +486,34 @@ async function main() {
         template: tpl,
         is_active: true,
       });
+      let ci = 0;
       for (const c of sec.contents || []) {
+        ci += 1;
+        const cId = uuid(`${tpl}:sec:${si}:c:${ci}`);
         await admin.from("contents").upsert({
-          id: c.id,
-          section_id: sec.id,
+          id: cId,
+          section_id: secId,
           title: c.title || null,
           body: c.body || null,
           image_url: c.image_url || null,
           cta_text: c.cta_text || null,
-          ordering: c.ordering || 1,
+          category: c.category || null,
+          ordering: c.ordering || ci,
           is_active: true,
         });
         for (const lk of c.links || []) {
           await admin
             .from("content_links")
-            .upsert({ content_id: c.id, link_id: LINKS[lk] }, { onConflict: "content_id,link_id" });
+            .upsert({ content_id: cId, link_id: LINKS[lk] }, { onConflict: "content_id,link_id" });
         }
       }
+      console.log(`✓ ${tpl}: section #${si} (${sec.block_type})`);
     }
-    console.log("✓ template:", tpl);
   }
 
   await admin.from("site_settings").update({ active_template: "classic-sales" }).eq("id", 1);
   console.log("✓ Selesai. Template aktif = classic-sales");
+  console.log("✓ Semua konten sekarang dalam Bahasa Inggris, unik per template.");
 }
 
 main().catch((e) => {

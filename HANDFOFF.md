@@ -98,6 +98,7 @@ npm run dev       # http://localhost:3000
 - [x] Export leads ke CSV (`GET /api/leads/export`, terlindungi auth) + tombol di `/admin/leads`
 - [x] **Verifikasi menyeluruh** (`node scripts/verify-site.mjs`) — 32/32 cek lolos: semua route publik + admin (dengan & tanpa auth) + API + 5 template.
 - [x] **Bug fix `opengraph-image` di Windows**: `next/og`/`@vercel/og` gagal dimuat di Windows (bug path font `fileURLToPath(join(import.meta.url,...))`). Route sekarang guard `process.platform==="win32"` → fallback SVG; di Linux/Vercel tetap PNG asli via `next/og`. (Jangan jalankan `next build` lalu `next dev` tanpa hapus `.next` — bisa memicu error `clientModules` undefined.)
+- [x] **Rewrite konten → Bahasa Inggris (USA) & unik per template** + **visual makeover**. Hero jadi split (teks + gambar + guarantee seal + rating + trust badges), card lebih kaya (icon/stat/testimoni/pro-con/offer), CTA menarik. Seed pakai UUID deterministik per template — memperbaiki bug id konten kembar lintas template (sebelumnya `lead-gen` & `long-form` berbagi id, sehingga saling menimpa).
 
 ---
 

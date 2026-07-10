@@ -8,17 +8,42 @@ export default function Hero({ section }: { section: SectionWithContents }) {
 
   return (
     <section className="hero">
-      <div className="container hero-inner">
-        <h1 className="hero-heading">{s.heading || hero?.title || "Selamat Datang"}</h1>
-        {s.subheading && <p className="hero-sub">{s.subheading}</p>}
+      <div className="container hero-grid">
+        <div className="hero-copy">
+          {s.rating && (
+            <div className="rating">
+              <span className="stars">★</span>
+              <span>{s.rating}</span>
+            </div>
+          )}
+          <h1 className="hero-heading">{s.heading || hero?.title || "Welcome"}</h1>
+          {s.subheading && <p className="hero-sub">{s.subheading}</p>}
+          {Array.isArray(s.badges) && s.badges.length > 0 && (
+            <div className="hero-badges">
+              {s.badges.map((b: string, i: number) => (
+                <span key={i} className="badge badge-amber">
+                  {b}
+                </span>
+              ))}
+            </div>
+          )}
+          {link && cta && (
+            <a className="btn btn-lg" href={link.url} target="_blank" rel="noopener noreferrer">
+              {cta}
+            </a>
+          )}
+        </div>
+
         {hero?.image_url && (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img className="hero-img" src={hero.image_url} alt={hero.title ?? ""} />
-        )}
-        {link && cta && (
-          <a className="btn btn-lg" href={link.url} target="_blank" rel="noopener noreferrer">
-            {cta}
-          </a>
+          <div className="hero-media">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img className="hero-img" src={hero.image_url} alt={hero.title ?? ""} />
+            <div className="guarantee-seal">
+              67-Day
+              <br />
+              Guarantee
+            </div>
+          </div>
         )}
       </div>
     </section>
