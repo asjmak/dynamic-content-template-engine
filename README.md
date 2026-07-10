@@ -151,6 +151,13 @@ Submit mengirim ke `POST /api/leads` (disimpan ke tabel `leads` via service role
 Jika `settings.redirect_url` diisi, pengunjung diarahkan ke link affiliate setelah submit.
 Prospek tertangkap bisa dilihat di `/admin/leads`.
 
+### Export leads ke CSV
+
+Di `/admin/leads` ada tombol **Export CSV** yang mengunduh semua prospek
+(`id, created_at, name, email, phone, source`) sebagai file `leads-<timestamp>.csv`.
+Endpoint-nya `GET /api/leads/export` — terlindungi, hanya admin yang sudah login
+(cookie auth) yang boleh mengakses; kalau belum login akan dapat `401`.
+
 ---
 
 ## 7. Seed konten demo (VigRX Plus)

@@ -11,8 +11,15 @@ export default async function LeadsPage() {
 
   return (
     <div>
-      <h1>Leads</h1>
-      <p>{data?.length ?? 0} prospek tertangkap.</p>
+      <div className="row-between">
+        <div>
+          <h1>Leads</h1>
+          <p>{data?.length ?? 0} prospek tertangkap.</p>
+        </div>
+        <a className="btn secondary" href="/api/leads/export">
+          Export CSV
+        </a>
+      </div>
       <table>
         <thead>
           <tr>
