@@ -17,7 +17,7 @@ export default async function EditLink({ params }: { params: { id: string } }) {
 
   return (
     <div>
-      <Link href="/admin/links">← Kembali</Link>
+      <Link href="/admin/links">← Back</Link>
       <h1>Edit Link</h1>
       <LinkForm link={data as any} />
     </div>

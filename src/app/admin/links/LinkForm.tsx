@@ -26,7 +26,7 @@ export default function LinkForm({ link }: { link?: Link }) {
         Active
       </label>
       <button className="btn" type="submit">
-        Simpan
+        Save
       </button>
     </form>
   );

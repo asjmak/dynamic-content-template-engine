@@ -16,7 +16,7 @@ export default async function SectionsList() {
       <div className="row-between">
         <h1>Sections</h1>
         <Link className="btn" href="/admin/sections/new">
-          + Baru
+          + New Section
         </Link>
       </div>
       <table>
@@ -38,12 +38,14 @@ export default async function SectionsList() {
               <td>{s.title}</td>
               <td>{s.template}</td>
               <td>{s.is_active ? "✓" : "—"}</td>
-              <td style={{ display: "flex", gap: 8 }}>
+              <td className="table-actions">
                 <Link href={`/admin/sections/${s.id}`}>Edit</Link>
-                <form action={deleteSection}>
+                <form action={deleteSection} onSubmit={(e: any) => {
+                  if (!confirm("Delete this section and all its contents?")) e.preventDefault();
+                }}>
                   <input type="hidden" name="id" value={s.id} />
                   <button type="submit" className="btn-link">
-                    Hapus
+                    Delete
                   </button>
                 </form>
               </td>

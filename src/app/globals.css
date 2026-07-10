@@ -697,10 +697,17 @@ section[id] {
   text-decoration: none;
   font-weight: 500;
   transition: color 0.2s ease;
+  padding: 4px 0;
+  border-bottom: 2px solid transparent;
 }
 
 .admin-nav-links a:hover {
   color: #fff;
+}
+
+.admin-nav-active {
+  color: #fff !important;
+  border-bottom-color: #818cf8 !important;
 }
 
 .btn-link {
@@ -820,6 +827,21 @@ tr:last-child td {
 
 tr:hover {
   background: #f8fafc;
+}
+
+.table-actions {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  white-space: nowrap;
+}
+
+.table-actions a, .table-actions button {
+  font-size: 13px;
+}
+
+.table-actions .btn-link {
+  color: var(--danger);
 }
 
 .dash-cards {

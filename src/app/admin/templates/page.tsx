@@ -6,27 +6,27 @@ const TEMPLATES = [
   {
     id: "classic-sales",
     name: "Classic Sales",
-    desc: "Halaman jualan produk klasik: Hero → Manfaat → Testimoni → Cara Kerja → Penawaran → FAQ. Fokus konversi langsung.",
+    desc: "Hero → Benefits → Testimonials → How It Works → Offer → FAQ. Classic direct-response structure built for conversion.",
   },
   {
     id: "lead-gen",
     name: "Lead Generation",
-    desc: "Fokus menangkap prospek: Hero → Masalah → Manfaat → Form Lead → Testimoni. Cocok untuk mengumpulkan lead/WA.",
+    desc: "Focus on capturing prospects: Hero → Value → Problem → Benefits → Lead Form → Testimonials → FAQ. Designed for list building.",
   },
   {
     id: "modern-review",
     name: "Modern Review",
-    desc: "Gaya review: Rating → Pro & Kontra → Cara Kerja → Statistik → Garansi → FAQ. Bangun trust sebelum jual.",
+    desc: "Review-style: Hero → Pros & Cons → How It Works → Stats → Guarantee → Testimonials → FAQ. Builds trust before selling.",
   },
   {
     id: "long-form",
-    name: "Long-form Sales",
-    desc: "Surat penjualan bertutur: Hero → Cerita → Manfaat → Testimoni → Penawaran → FAQ. Bangun trust lewat narasi.",
+    name: "Long-form Story",
+    desc: "Narrative sales letter: Hero → Story → What Changed → Testimonials → Offer → FAQ. Builds desire through storytelling.",
   },
   {
     id: "comparison",
     name: "Comparison (VS)",
-    desc: "Gaya perbandingan: Hero → VigRX vs Lainnya → Verdict → FAQ. Untuk pengunjung yang sedang membandingkan.",
+    desc: "Head-to-head: Hero → VigRX vs Others → Verdict → FAQ. For visitors actively comparing products.",
   },
 ];
 
@@ -42,8 +42,8 @@ export default async function TemplatesPage() {
 
   return (
     <div>
-      <h1>Template Landing Page</h1>
-      <p>Pilih template yang aktif. Perubahan langsung terlihat di halaman depan.</p>
+      <h1>Landing Page Templates</h1>
+      <p>Select which template is active. Changes take effect immediately on the front page.</p>
       <div className="dash-cards">
         {TEMPLATES.map((t) => (
           <div className="dash-card" key={t.id}>
@@ -54,12 +54,12 @@ export default async function TemplatesPage() {
               {t.desc}
             </p>
             {active === t.id ? (
-              <strong style={{ color: "#16a34a" }}>✓ Aktif</strong>
+              <strong style={{ color: "#16a34a" }}>✓ Active</strong>
             ) : (
               <form action={setActiveTemplate}>
                 <input type="hidden" name="template" value={t.id} />
                 <button className="btn" type="submit">
-                  Gunakan
+                  Activate
                 </button>
               </form>
             )}
@@ -68,7 +68,7 @@ export default async function TemplatesPage() {
       </div>
       <p style={{ marginTop: 24 }}>
         <a className="btn" href="/">
-          Lihat website →
+          View website →
         </a>
       </p>
     </div>

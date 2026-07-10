@@ -14,7 +14,7 @@ export default async function LeadsPage() {
       <div className="row-between">
         <div>
           <h1>Leads</h1>
-          <p>{data?.length ?? 0} prospek tertangkap.</p>
+          <p>{data?.length ?? 0} leads captured.</p>
         </div>
         <a className="btn secondary" href="/api/leads/export">
           Export CSV
@@ -23,8 +23,8 @@ export default async function LeadsPage() {
       <table>
         <thead>
           <tr>
-            <th>Waktu</th>
-            <th>Nama</th>
+            <th>Date/Time</th>
+            <th>Name</th>
             <th>Email</th>
             <th>Phone</th>
             <th>Source</th>
@@ -36,7 +36,7 @@ export default async function LeadsPage() {
               <td>{new Date(l.created_at).toLocaleString()}</td>
               <td>{l.name}</td>
               <td>{l.email}</td>
-              <td>{l.phone}</td>
+              <td>{l.phone || "—"}</td>
               <td>{l.source}</td>
             </tr>
           ))}

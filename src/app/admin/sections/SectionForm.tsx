@@ -61,7 +61,7 @@ export default function SectionForm({ section }: { section?: Section }) {
         Active
       </label>
       <button className="btn" type="submit">
-        Simpan
+        Save
       </button>
     </form>
   );

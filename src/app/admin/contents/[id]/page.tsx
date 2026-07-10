@@ -27,7 +27,7 @@ export default async function EditContent({
 
   return (
     <div>
-      <Link href="/admin/contents">← Kembali</Link>
+      <Link href="/admin/contents">← Back</Link>
       <h1>Edit Content</h1>
       <ContentForm content={mapContent(data) as any} />
     </div>

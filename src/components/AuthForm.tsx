@@ -28,7 +28,8 @@ export default function AuthForm() {
 
   return (
     <form className="auth-form" onSubmit={onSubmit}>
-      <h1>Login Admin</h1>
+      <h1>Admin Login</h1>
+      <p>Sign in to manage your site content.</p>
       <label>
         Email
         <input
@@ -49,7 +50,7 @@ export default function AuthForm() {
       </label>
       {error && <p className="error">{error}</p>}
       <button className="btn" disabled={loading} type="submit">
-        {loading ? "Memproses…" : "Masuk"}
+        {loading ? "Signing in…" : "Sign In"}
       </button>
     </form>
   );

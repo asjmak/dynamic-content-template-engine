@@ -72,7 +72,7 @@ export default async function ContentForm({ content }: { content?: Content }) {
         </label>
       </fieldset>
       <fieldset>
-        <legend>Links terkait</legend>
+        <legend>Related Links</legend>
         {(links ?? []).map((l: any) => (
           <label key={l.id} className="checkbox">
             <input
@@ -94,7 +94,7 @@ export default async function ContentForm({ content }: { content?: Content }) {
         Active
       </label>
       <button className="btn" type="submit">
-        Simpan
+        Save
       </button>
     </form>
   );

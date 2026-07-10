@@ -16,7 +16,7 @@ export default async function ContentsList() {
       <div className="row-between">
         <h1>Contents</h1>
         <Link className="btn" href="/admin/contents/new">
-          + Baru
+          + New Content
         </Link>
       </div>
       <table>
@@ -34,14 +34,16 @@ export default async function ContentsList() {
             <tr key={c.id}>
               <td>{c.ordering}</td>
               <td>{c.title}</td>
-              <td>{c.sections?.title ?? "—"}</td>
+              <td>{c.sections?.title || "—"}</td>
               <td>{c.is_active ? "✓" : "—"}</td>
-              <td style={{ display: "flex", gap: 8 }}>
+              <td className="table-actions">
                 <Link href={`/admin/contents/${c.id}`}>Edit</Link>
-                <form action={deleteContent}>
+                <form action={deleteContent} onSubmit={(e: any) => {
+                  if (!confirm("Delete this content item?")) e.preventDefault();
+                }}>
                   <input type="hidden" name="id" value={c.id} />
                   <button type="submit" className="btn-link">
-                    Hapus
+                    Delete
                   </button>
                 </form>
               </td>

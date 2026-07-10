@@ -21,7 +21,7 @@ export default async function EditSection({
 
   return (
     <div>
-      <Link href="/admin/sections">← Kembali</Link>
+      <Link href="/admin/sections">← Back</Link>
       <h1>Edit Section</h1>
       <SectionForm section={data as any} />
     </div>

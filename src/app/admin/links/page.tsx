@@ -16,7 +16,7 @@ export default async function LinksList() {
       <div className="row-between">
         <h1>Links</h1>
         <Link className="btn" href="/admin/links/new">
-          + Baru
+          + New Link
         </Link>
       </div>
       <table>
@@ -40,12 +40,14 @@ export default async function LinksList() {
               </td>
               <td>{l.tracking_id}</td>
               <td>{l.is_active ? "✓" : "—"}</td>
-              <td style={{ display: "flex", gap: 8 }}>
+              <td className="table-actions">
                 <Link href={`/admin/links/${l.id}`}>Edit</Link>
-                <form action={deleteLink}>
+                <form action={deleteLink} onSubmit={(e: any) => {
+                  if (!confirm("Delete this link?")) e.preventDefault();
+                }}>
                   <input type="hidden" name="id" value={l.id} />
                   <button type="submit" className="btn-link">
-                    Hapus
+                    Delete
                   </button>
                 </form>
               </td>
