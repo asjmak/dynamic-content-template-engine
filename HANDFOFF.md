@@ -67,6 +67,7 @@ Kunci asli hanya ada di `.env.local` (tidak ikut ter-commit).
 | `seed-templates.mjs` | Seed 5 template demo (idempoten) | `node scripts/seed-templates.mjs` |
 | `create-admin.mjs` | Buat user admin Supabase Auth | `node scripts/create-admin.mjs` |
 | `verify-templates.mjs` | Verifikasi render + lead capture | `VERIFY_SITE=http://localhost:3000 node scripts/verify-templates.mjs` |
+| `verify-site.mjs` | Verifikasi MENYELURUH: semua route publik + admin (login otomatis) + API | `node scripts/verify-site.mjs` |
 | `external-app-example.mjs` | Contoh client webhook eksternal | `node scripts/external-app-example.mjs` |
 | `check-supabase.mjs` | Diagnostic koneksi & tabel | `node scripts/check-supabase.mjs` |
 
@@ -95,6 +96,15 @@ npm run dev       # http://localhost:3000
 - [x] GitHub repo dibuat & push
 - [x] Verifikasi 5 template render + lead capture OK
 - [x] Export leads ke CSV (`GET /api/leads/export`, terlindungi auth) + tombol di `/admin/leads`
+- [x] **Verifikasi menyeluruh** (`node scripts/verify-site.mjs`) — 32/32 cek lolos: semua route publik + admin (dengan & tanpa auth) + API + 5 template.
+- [x] **Bug fix `opengraph-image` di Windows**: `next/og`/`@vercel/og` gagal dimuat di Windows (bug path font `fileURLToPath(join(import.meta.url,...))`). Route sekarang guard `process.platform==="win32"` → fallback SVG; di Linux/Vercel tetap PNG asli via `next/og`. (Jangan jalankan `next build` lalu `next dev` tanpa hapus `.next` — bisa memicu error `clientModules` undefined.)
+
+---
+
+## Catatan Environment (Windows dev)
+
+- `next/og` tidak bisa dipakai di Windows (Next 14.2.x + `@vercel/og` bug path). OG image di lokal = SVG fallback; di Vercel/Linux = PNG asli. Ini wajar, bukan error.
+- Selalu hapus folder `.next` sebelum ganti antara `next build` ↔ `next dev` untuk menghindari error `Cannot read properties of undefined (reading 'clientModules')`.
 
 ---
 
