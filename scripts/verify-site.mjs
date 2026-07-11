@@ -101,11 +101,17 @@ console.log("\n== ADMIN DENGAN AUTH ==");
 const dash = await get("/admin", { auth: true });
 rec("GET /admin (200 Dashboard)", dash.res.status === 200 && dash.text.includes("Dashboard"), "HTTP " + dash.res.status);
 
-const tpl = await get("/admin/templates", { auth: true });
-rec("GET /admin/templates (200)", tpl.res.status === 200 && tpl.text.includes("Template Landing Page"), "HTTP " + tpl.res.status);
+  const tpl = await get("/admin/templates", { auth: true });
+  rec("GET /admin/templates (200)", tpl.res.status === 200 && tpl.text.includes("Landing Page Templates"), "HTTP " + tpl.res.status);
 
-const leads = await get("/admin/leads", { auth: true });
-rec("GET /admin/leads (200 + Export CSV)", leads.res.status === 200 && leads.text.includes("Export CSV"), "HTTP " + leads.res.status);
+  const leads = await get("/admin/leads", { auth: true });
+  rec("GET /admin/leads (200 + Export CSV)", leads.res.status === 200 && leads.text.includes("Export CSV"), "HTTP " + leads.res.status);
+
+  const abList = await get("/admin/ab-tests", { auth: true });
+  rec("GET /admin/ab-tests (200)", abList.res.status === 200 && abList.text.includes("A / B"), "HTTP " + abList.res.status);
+
+  const abNew = await get("/admin/ab-tests/new", { auth: true });
+  rec("GET /admin/ab-tests/new (200 form)", abNew.res.status === 200 && abNew.text.includes("A / B Test"), "HTTP " + abNew.res.status);
 
 // list pages + ambil satu id untuk halaman detail
 async function checkCrud(base, keyword) {
@@ -149,7 +155,7 @@ await admin.from("leads").delete().eq("email", "verify@example.com");
 // ---------- 5 template render ----------
 console.log("\n== 5 TEMPLATE RENDER (/ + switch active_template) ==");
 const checks = {
-  "classic-sales": ["VigRX Plus", "Why Men Choose"],
+    "classic-sales": ["VigRX Plus", "Why VigRX Plus® Stands Out"],
   "lead-gen": ["Free VigRX Plus", "Experiencing"],
   "modern-review": ["Honest VigRX", "Cons"],
   "long-form": ["60-Day VigRX", "Where It Started"],

@@ -503,6 +503,168 @@ const TEMPLATES = {
       },
     ],
   },
+
+  // ---------------------------------------------------------------- VIGRX OFFICIAL (vigrxplus.com style)
+  // Desain & konten selaras dengan website resmi vigrxplus.com (merah/emas, Montserrat/Open Sans).
+  // CATATAN: testimoni di bawah masih CONTOH/placeholder (file referensi sendiri menandainya
+  // "EXAMPLE") — ganti dengan testimoni VERIFIKASI ASLI sebelum iklan berbayar (aturan FTC).
+  "vigrx-official": {
+    sections: [
+      {
+        block_type: "hero",
+        title: "Hero",
+        ordering: 10,
+        settings: {
+          heading: "Have Great Sex Without A Doctor's Visit",
+          subheading:
+            "The world's only clinically-tested and proven, all-natural male performance supplement. Firmer, longer-lasting erections and renewed desire — no prescription required.",
+          cta_label: "Order Now",
+          rating: "Rated 4.8/5 by 1000s of men",
+          badges: ["Clinically Tested & Proven", "Doctor Endorsed", "GMP Certified"],
+          trust_items: [
+            { icon: "★", text: "Rated 4.8/5 by 1000s of men" },
+            { icon: "✓", text: "Doctor Endorsed Formula" },
+            { icon: "✓", text: "GMP Certified Facility" },
+          ],
+        },
+        contents: [
+          {
+            title: "VigRX Plus®",
+            body: "Order today with our discreet shipping and full 67-day money-back guarantee.",
+            image_url: IMG.product,
+            cta_text: "Order Now",
+            category: "hero",
+            links: ["official"],
+          },
+        ],
+      },
+      {
+        block_type: "grid",
+        title: "The Proof — Backed By Science",
+        ordering: 20,
+        settings: { columns: 4 },
+        contents: [
+          { category: "stat", title: "+58.97%", body: "Firmer, stronger erections — improvement in erection firmness", links: [] },
+          { category: "stat", title: "+47%", body: "More sexual desire — boost in libido & drive", links: [] },
+          { category: "stat", title: "+82.31%", body: "Higher satisfaction — overall sexual satisfaction", links: [] },
+          { category: "stat", title: "+62.82%", body: "Longer-lasting erections — ability to maintain erections", links: [] },
+        ],
+      },
+      {
+        block_type: "single_column",
+        title: "",
+        ordering: 25,
+        settings: {},
+        contents: [
+          { title: "", body: "† Results based on a clinical study of the VigRX Plus formula. Individual results may vary.", links: [] },
+        ],
+      },
+      {
+        block_type: "grid",
+        title: "Real Results, Backed By Science",
+        ordering: 30,
+        settings: { columns: 3 },
+        contents: [
+          { category: "🌿", title: "Harder, Fuller Erections", body: "Supports healthy blood flow so erections feel firmer, fuller, and more reliable when it matters most.", cta_text: "Order Now", links: ["official"] },
+          { category: "🔥", title: "Renewed Desire", body: "Reignites libido and sexual appetite with traditional botanicals used for male vitality for centuries.", cta_text: "Order Now", links: ["official"] },
+          { category: "⏱️", title: "Stay The Course", body: "Helps you maintain erections longer, giving you and your partner more satisfying, confident experiences.", cta_text: "Order Now", links: ["official"] },
+          { category: "🌱", title: "All-Natural Formula", body: "No prescription, no synthetic chemicals — just clinically-studied herbs manufactured in a GMP facility.", cta_text: "Order Now", links: ["official"] },
+          { category: "🔬", title: "Clinically Proven", body: "The only male supplement with a published, double-blind clinical study demonstrating measurable results.", cta_text: "Order Now", links: ["official"] },
+          { category: "🌍", title: "Trusted Worldwide", body: "Over 1.2 million boxes sold to men in 100+ countries who choose VigRX Plus as their daily performance partner.", cta_text: "Order Now", links: ["official"] },
+        ],
+      },
+      {
+        block_type: "single_column",
+        title: "Endorsed By Medical Experts",
+        ordering: 40,
+        settings: {},
+        contents: [
+          { title: "Why Professionals Recommend It", body: "VigRX Plus is formulated with standardized botanical extracts and produced in an FDA-registered, GMP-certified facility. It is intended as a daily dietary supplement for male sexual wellness — the quality standard clinicians look for in a daily male-performance supplement.", links: [] },
+        ],
+      },
+      {
+        block_type: "grid",
+        title: "The Premium Formula — Powerful Botanicals, Precisely Dosed",
+        ordering: 50,
+        settings: { columns: 4 },
+        contents: [
+          { category: "🌿", title: "Korean Red Ginseng", body: "Traditional vigor & stamina root.", links: [] },
+          { category: "🌿", title: "Hawthorn Berry", body: "Supports healthy circulation.", links: [] },
+          { category: "🌿", title: "Ginkgo Biloba", body: "Promotes blood flow & arousal.", links: [] },
+          { category: "🌿", title: "Saw Palmetto", body: "Male hormonal balance support.", links: [] },
+          { category: "🌿", title: "Damiana", body: "Libido & performance botanical.", links: [] },
+          { category: "🌿", title: "Bioperine®", body: "Boosts nutrient absorption.", links: [] },
+          { category: "🌿", title: "Epimedium", body: "Supports sexual function.", links: [] },
+          { category: "🌿", title: "Catuaba Bark", body: "Natural desire enhancer.", links: [] },
+        ],
+      },
+      {
+        block_type: "slider",
+        title: "Real Men, Real Results",
+        ordering: 55,
+        settings: {},
+        contents: [
+          { category: "testimonial", title: STAR, body: `"Within the first month I noticed a real difference in firmness and stamina. My confidence is back and my wife noticed too." — James R., 47`, links: [] },
+          { category: "testimonial", title: STAR, body: `"I was skeptical about a 'natural' product, but the clinical study sold me. Honestly the best investment I've made in myself." — Marcus T., 52`, links: [] },
+          { category: "testimonial", title: STAR, body: `"No side effects, just steady improvement. Shipping was discreet and the guarantee made it an easy yes." — David L., 41`, links: [] },
+        ],
+      },
+      {
+        block_type: "single_column",
+        title: "67-Day Money-Back Guarantee",
+        ordering: 60,
+        settings: {},
+        contents: [
+          { title: "Try It Risk-Free For 67 Days", body: "Try VigRX Plus risk-free for up to 67 days. If you're not completely satisfied with your results, return the empty boxes for a full refund — no questions asked. Your satisfaction is 100% guaranteed.", cta_text: "Claim Your Guarantee", category: "offer", links: ["official"] },
+        ],
+      },
+      {
+        block_type: "lead_form",
+        title: "Get Your Free VigRX Plus® Guide + 25% Discount",
+        ordering: 65,
+        settings: {
+          anchor: "lead-form",
+          urgency: "Discount slots are limited — claim yours before they reset",
+          title: "Get Your Free VigRX Plus® Guide + 25% Discount",
+          subtitle:
+            "Enter your email and we'll send your complete guide plus your private 25% discount code instantly. Your email stays private — unsubscribe anytime.",
+          cta_label: "Send My Free Guide + Discount",
+          redirect_url: "https://example.com/vigrx-plus",
+          trust: ["🔒 Privacy Protected", "✅ 100% Free", "⚡ Instant Delivery"],
+        },
+        contents: [],
+      },
+      {
+        block_type: "single_column",
+        title: "Frequently Asked Questions",
+        ordering: 70,
+        settings: {},
+        contents: [
+          { title: "How does VigRX Plus work?", body: "VigRX Plus combines clinically-studied botanicals that support healthy blood flow, testosterone balance, and sexual response. Taken daily, the formula builds up in your system to improve erection quality, desire, and satisfaction.", links: [] },
+          { title: "How soon will I see results?", body: "Most men report noticeable improvements within the first 2–4 weeks, with the best results typically seen after 60–90 days of consistent daily use. Individual results vary.", links: [] },
+          { title: "Is it safe? Are there side effects?", body: "VigRX Plus uses all-natural ingredients and is manufactured in an FDA-registered, GMP-certified facility. It is generally well tolerated. As with any supplement, consult your physician if you have a medical condition or take medication.", links: [] },
+          { title: "Do I need a prescription?", body: "No. VigRX Plus is a dietary supplement available without a prescription and ships discreetly to your door.", links: [] },
+          { title: "What if it doesn't work for me?", body: "You're covered by our 67-day money-back guarantee. Return the product — even empty boxes — for a full refund, no questions asked.", links: [] },
+        ],
+      },
+      {
+        block_type: "single_column",
+        title: "Ready For Better Sex — Without The Doctor?",
+        ordering: 80,
+        settings: {},
+        contents: [
+          { title: "Join Over A Million Men", body: "Join over a million men who chose the clinically proven, all-natural path to performance. Order today and lock in our discreet-shipping, money-back guarantee.", cta_text: "Order VigRX Plus Now", category: "offer", links: ["official"] },
+        ],
+      },
+      {
+        block_type: "footer",
+        title: "Footer",
+        ordering: 100,
+        settings: { text: DISCLAIMER },
+        contents: [],
+      },
+    ],
+  },
 };
 
 async function main() {

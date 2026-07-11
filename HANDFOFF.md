@@ -25,11 +25,46 @@ Branch: `main` (default branch di GitHub masih `master` — bisa diubah di Setti
 ---
 
 ## Status Database (Sudah Jalan)
-- ✅ 5 tabel: `site_settings`, `sections`, `contents`, `links`, `content_links`, `leads`
+- ✅ 7 tabel: `site_settings`, `sections`, `contents`, `links`, `content_links`, `leads`, `ab_tests`
 - ✅ Kolom `template` di `sections`, `active_template` di `site_settings`
 - ✅ Block type `lead_form` (untuk form lead capture)
 - ✅ RLS: publik SELECT saja, authenticated INSERT/UPDATE/DELETE, service role bypass
 - ✅ Seed demo VigRX Plus untuk 5 template
+
+---
+
+## 🧪 A/B Test Variasi Copy (Lightweight)
+Admin bisa menguji variasi heading/body/CTA dari satu content item dengan traffic split 50/50 otomatis.
+
+### Cara Kerja
+1. Admin membuat **A/B Test** via `/admin/ab-tests/new` → pilih `template` → pilih `section` → pilih `Content A` (kontrol) & `Content B` (variasi).
+2. Traffic split **server-side** via cookie `ab-variant` (JSON `{testId: "A|B"}`), max-age 30 hari.
+3. Saat lead submit form, `ab_test_id` & `ab_variant` tersimpan di tabel `leads`.
+4. Dashboard `/admin/ab-tests` menampilkan statistik lead per varian (A vs B).
+
+### Arsitektur
+- `page.tsx` (`src/app/page.tsx`): baca cookie → assign variant baru (random 50/50) → panggil `getPageData(abMap)` → render sections yang sudah swap.
+- `getPageData`: menerima `abVariant?: Record<string,"A"|"B">` → query `ab_tests` aktif → cari index `content_a_id` → ganti dengan `content_b_id` kalau variant B.
+- `src/app/api/leads/route.ts`: parse cookie → cari `ab_test` aktif dengan section_id=source → simpan `ab_test_id` + `ab_variant` saat insert lead.
+
+### Script & File Baru
+| File | Fungsi |
+|---|---|
+| `scripts/run-ab-test-schema.mjs` | Migration DDL tabel `ab_tests` + kolom leads |
+| `src/lib/types.ts` | Type `AbTest` |
+| `src/lib/data.ts` | `getPageData(abVariant)` + `getActiveAbTests()` |
+| `src/app/page.tsx` | Server-side cookie split + AbVariantSetter inline script |
+| `src/app/api/leads/route.ts` | Simpan `ab_test_id` & `ab_variant` di lead |
+| `src/lib/actions.ts` | `upsertAbTest`, `deleteAbTest`, `toggleAbTest` |
+| `src/app/admin/ab-tests/page.tsx` | List A/B tests + statistik lead per varian |
+| `src/app/admin/ab-tests/new/page.tsx` | Form create A/B test |
+| `src/app/admin/ab-tests/new/AbTestForm.tsx` | Form component (server) |
+| `src/app/admin/page.tsx` | Card "A/B Tests" di dashboard admin |
+
+### Limitasi
+- Hanya bisa swap **1 content item** per test (konsep lightweight).
+- Untuk test multi-content bersamaan, admin bisa buat beberapa A/B test aktif sekaligus.
+- Tidak ada tracking impressions/pageviews — hanya **lead capture** (conversion events). Untuk full funnel analytics perlu analytics eksternal (GA4/Plausible).
 
 ---
 
@@ -70,6 +105,9 @@ Kunci asli hanya ada di `.env.local` (tidak ikut ter-commit).
 | `verify-site.mjs` | Verifikasi MENYELURUH: semua route publik + admin (login otomatis) + API | `node scripts/verify-site.mjs` |
 | `external-app-example.mjs` | Contoh client webhook eksternal | `node scripts/external-app-example.mjs` |
 | `check-supabase.mjs` | Diagnostic koneksi & tabel | `node scripts/check-supabase.mjs` |
+| `run-ab-test-schema.mjs` | Migration DDL untuk A/B test (tabel `ab_tests` + kolom leads) | `node scripts/run-ab-test-schema.mjs` |
+| `run-pages-schema.mjs` | Migration tabel `pages` (multi-slug) + RLS + seed demo `vigrx-plus` | `node scripts/run-pages-schema.mjs` |
+| `run-palette-schema.mjs` | Migration kolom `palette` (warna) di `pages` & `site_settings` | `node scripts/run-palette-schema.mjs` |
 
 ---
 
@@ -167,6 +205,16 @@ npm run dev       # http://localhost:3000
 
 **File berubah (compliance):** `src/app/privacy/page.tsx` (baru), `src/app/terms/page.tsx` (baru), `src/components/LegalPage.tsx` (baru), `src/components/CookieConsent.tsx` (baru), `src/lib/blocks/Footer.tsx`, `src/app/layout.tsx`, `src/app/globals.css`.
 
+**Dark Mode (toggle tema):** Tambahan fitur theme switcher (light / dark / system):
+- **CSS variables** di `src/app/globals.css`: semua warna diubah ke token `--bg`, `--surface`, `--ink`, `--muted`, `--border`, dst. Blok `[data-theme="dark"]` override token tersebut ke palet gelap.
+- **Inline init script** di `src/app/layout.tsx` (via `next/script` `beforeInteractive`): baca `localStorage.theme` (default `system`) → set `data-theme` di `<html>` SEBELUM paint → mencegah flash white (FOUC).
+- **`src/components/ThemeToggle.tsx`** (client): tombol floating bottom-right, siklus `light → dark → system → light`. Simpan pilihan di `localStorage.theme`, listen `prefers-color-scheme` kalau mode `system`.
+- **`src/app/admin/layout.tsx`**: juga render `<ThemeToggle />`.
+- **Style `.theme-toggle`** di `globals.css` (floating, responsive: label disembunyikan di mobile).
+- Override dark sudah ditambah untuk: section genap, card (quote/pro/con/offer/problem), table, form input focus, hero-img, legal-note, lead-urgency, lead-trust-badge, template-filter select, guarantee-seal.
+
+**File berubah (dark mode):** `src/app/globals.css`, `src/app/layout.tsx`, `src/components/ThemeToggle.tsx` (baru), `src/app/admin/layout.tsx`.
+
 **Marketing overhaul — 4 template lainnya** (classic-sales, modern-review, long-form, comparison): setara dengan lead-gen, terapkan via `scripts/seed-templates.mjs`:
 - **Urgency** (`⏳ For a limited time…`) pada tiap section offer/CTA (classic-sales "Limited-Time Offer", modern-review "Guarantee & Where to Buy", long-form "Your Turn", comparison "The Verdict").
 - **Testimoni diperkuat** (outcome spesifik) untuk classic-sales & long-form; **modern-review dapat section testimonials baru** ("What Buyers Are Saying", slider) — sebelumnya tidak punya.
@@ -174,6 +222,40 @@ npm run dev       # http://localhost:3000
 - Verifikasi: ke-5 template HTTP 200, `lang=en`, urgency/FAQ/testimoni muncul. Catatan: testimoni masih **fiksi** (template) — ganti dengan asli sebelum iklan berbayar (aturan FTC).
 
 **File berubah:** `scripts/seed-templates.mjs` (4 template di atas).
+
+---
+
+## Sesi 2026-07-11 (Admin UX + Multi-Slug + Palette Warna)
+
+Tiga penyempurnaan admin & rendering, semua tanpa mengubah struktur data section/content (tetap diikat `template`).
+
+### 1. Grouped Content per Section (admin)
+- `src/app/admin/contents/page.tsx` dirombak: saat 1 `template` dipilih (`?template=...`), konten dikelompokkan di bawah header **Section** (mengikuti urutan halaman: Hero → … → Footer) via `<details>` collapsible.
+- Tiap section: chip `block_type`, dot aktif, tombol **Edit section** + **＋ Add** (langsung prefill `?section=<id>` di form new content).
+- Reorder ↑/↓ per section: `src/components/ContentReorder.tsx` (client) + action `reorderContent` di `actions.ts` (tukar & nomori ulang `ordering` dalam section, lalu `router.refresh()`).
+- `src/app/admin/contents/new/page.tsx` + `ContentForm.tsx`: terima `?section=` → select section ter-pilih.
+- CSS: `.section-group`, `.section-head`, `.block-chip`, `.reorder-btn`, `.count-link`, `.section-cell-title` (+ dark mode).
+- Tab **Sections** juga dirapihkan: kolom `Type`+`Title` digabung jadi satu kolom "Section" (chip), dan ditambah **kolom "Contents"** berisi jumlah content per section (link ke grouped view).
+
+### 2. Multi-Slug (banyak landing page sekaligus)
+- Tabel baru `pages` (slug unik, template, title, meta_description, status, **palette**). RLS: publik hanya SELECT `status='active'`; admin ALL.
+- Route publik `src/app/[slug]/page.tsx`: render sections+contents template yang dirujuk, metadata per-slug (canonical/og:url=/slug), JSON-LD, A/B split, `?preview=1` untuk admin melihat draft (RLS mengamankan).
+- `src/lib/data.ts`: `getPageData(template?)` & `getActiveAbTests(template?)` diparameteri; tambah `getPageBySlug`. Helper A/B diekstrak ke `src/lib/ab.ts`.
+- Admin **Pages** CRUD: `src/app/admin/pages/{page,new,[id],PageForm}.tsx` + link di `Navbar.tsx`.
+- `src/app/sitemap.ts`: sertakan URL slug aktif. Homepage `/` tetap pakai `site_settings.active_template`.
+- Migration: `supabase/schema_pages.sql` + `scripts/run-pages-schema.mjs` (seed demo `vigrx-plus` → `vigrx-official`).
+
+### 3. Palette Warna (template bisa ganti nada warna)
+- Kolom `palette` di `pages` & `site_settings` (default `red`). Migration: `supabase/schema_palette.sql` + `scripts/run-palette-schema.mjs`.
+- `data-palette` dipasang di `<main>` (homepage dari `site_settings.palette`, `/[slug]` dari `page.palette`) → memisahkan **warna** dari **template**.
+- 4 preset: `red` (gaya vigrx lama), `green` (hijau tua), `blue`, `violet` — blok `[data-palette=...]` di `globals.css` (+ varian dark mode per palette).
+- `vigrx-official` di-refactor: warna merah/emas hardcode (`--maroon`/`--red-dark`) diganti variable palette agar bisa berganti warna.
+- Admin: dropdown **Color Palette** di form Pages + form **Default Color Palette** (global) di admin Templates (`setDefaultPalette`).
+
+**Status:** semua render & verifikasi lolos (`verify-site.mjs` 34/34, + cek slug/404/preview/draft-RLS/palette). **Belum di-commit** (termasuk fitur sesi sebelumnya: dark mode, A/B test).
+
+**File baru:** `src/app/[slug]/page.tsx`, `src/lib/ab.ts`, `src/components/ContentReorder.tsx`, `src/app/admin/pages/{page,new/[id],PageForm}.tsx`, `supabase/schema_pages.sql`, `supabase/schema_palette.sql`, `scripts/run-pages-schema.mjs`, `scripts/run-palette-schema.mjs`.
+**File berubah:** `src/app/admin/contents/page.tsx`, `src/app/admin/contents/new/page.tsx`, `src/app/admin/contents/ContentForm.tsx`, `src/app/admin/sections/page.tsx`, `src/lib/data.ts`, `src/lib/types.ts`, `src/lib/templates.ts`, `src/lib/actions.ts`, `src/app/page.tsx`, `src/app/[slug]/page.tsx`, `src/app/sitemap.ts`, `src/components/Navbar.tsx`, `src/app/admin/templates/page.tsx`, `src/app/globals.css`.
 
 ---
 
@@ -185,23 +267,30 @@ npm run dev       # http://localhost:3000
 ---
 
 ## Yang Bisa Dilanjutkan
+- [x] **Grouped Content per Section** (admin) — kelompokkan konten di bawah header section + reorder ↑/↓ + prefill section
+- [x] **Kolom "Contents" di tab Sections** — jumlah content per section (link ke grouped view)
+- [x] **Multi-Slug** — banyak landing page sekaligus (`/slug` → template), admin Pages CRUD, sitemap
+- [x] **Palette Warna** — template bisa ganti nada (red/green/blue/violet) per page + default global
+- [x] **Dark Mode toggle** — theme switcher (light/dark/system), `data-theme` + CSS variables, tanpa FOUC
+- [x] **A/B Test Variasi Copy (Lightweight)** — server-side split, lead tracking per variant
+- [x] Export leads ke CSV
+- [x] Security headers + robots.txt + sitemap.xml
+- [x] Optimasi gambar (`next/image`)
+- [ ] **Commit + push** semua perubahan (masih di working tree — lihat Catatan di bawah)
 - [ ] **Deploy ke Vercel** (production readiness utama)
 - [ ] **Ganti password admin Supabase Auth** (`admin@local.dev` / `Admin12345!` — jangan dipakai di produksi)
 - [ ] **Ganti link afiliasi placeholder** (`https://example.com/vigrx-plus` → URL afiliasi asli) di `scripts/seed-templates.mjs` (LINKS) lalu re-seed
 - [ ] **Tambah HMAC signature untuk webhook** (`/api/webhook`) — keamanan
 - [ ] **Pasang analytics** (GA4 / Plausible) untuk ukur konversi & lead
 - [ ] **Tambah canonical URL + hreflang** (saat multi-bahasa)
-- [ ] Test A/B template
-- [ ] Multi-slug (banyak landing page sekaligus)
-- [ ] Dark mode / tema
-- [x] Export leads ke CSV
-- [x] Security headers + robots.txt + sitemap.xml
-- [x] Optimasi gambar (`next/image`)
+- [ ] Test A/B template (end-to-end)
 
-### Rekomendasi Produksi (ringkasan analisis 2026-07-10)
-- ✅ **Sudah layak**: 5 template render EN murni, `lang=en-US`, disclaimer FDA, OG/Twitter tags, lead capture `POST /api/leads` OK, responsif, security headers & SEO dasar (robots/sitemap) sudah ada.
-- ⚠️ **Wajib sebelum live**: (1) ganti password admin, (2) ganti URL afiliasi placeholder, (3) deploy via Vercel (HTTPS otomatis), (4) HMAC webhook.
-- 💡 **Nice-to-have**: analytics, canonical/hreflang, A/B test, multi-slug, dark mode, tambah lebih banyak testimoni/stat agar konten makin meyakinkan.
+### Rekomendasi Produksi (update 2026-07-11)
+- ✅ **Sudah lengkap secara fitur**: 5 template EN murni, `lang=en-US`, disclaimer FDA, OG/Twitter tags, lead capture `POST /api/leads` OK, responsif, security headers, robots/sitemap, **dark mode**, **A/B test**, **multi-slug** (banyak URL), **palette warna**, **grouped content admin + reorder ↑/↓**.
+- ⚠️ **Wajib sebelum live**: (1) **commit + push** semua perubahan (masih di working tree!), (2) ganti password admin, (3) ganti URL afiliasi placeholder, (4) deploy via Vercel (HTTPS otomatis), (5) HMAC webhook.
+- 💡 **Nice-to-have**: analytics, canonical/hreflang (multi-bahasa), test A/B end-to-end, lebih banyak testimoni/stat ASLI (aturan FTC), deploy Vercel.
+
+> **⚠️ Catatan penting — belum di-commit:** seluruh fitur sesi ini (grouped content, count column, multi-slug, palette) **plus** fitur sesi sebelumnya (dark mode, A/B test, privacy/terms, dll.) masih ada di working tree, belum `git commit`/`push`. `HEAD == origin/main`. Segera commit agar tidak hilang.
 
 ---
 

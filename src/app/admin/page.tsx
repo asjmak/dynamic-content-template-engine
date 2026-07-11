@@ -11,11 +11,13 @@ export default async function Dashboard() {
     { count: contents },
     { count: links },
     { count: leads },
+    { count: abTests },
   ] = await Promise.all([
     supabase.from("sections").select("*", { count: "exact", head: true }),
     supabase.from("contents").select("*", { count: "exact", head: true }),
     supabase.from("links").select("*", { count: "exact", head: true }),
     supabase.from("leads").select("*", { count: "exact", head: true }),
+    supabase.from("ab_tests").select("*", { count: "exact", head: true }),
   ]);
 
   const cards = [
@@ -23,6 +25,7 @@ export default async function Dashboard() {
     { label: "Contents", num: contents ?? 0, href: "/admin/contents" },
     { label: "Links", num: links ?? 0, href: "/admin/links" },
     { label: "Leads", num: leads ?? 0, href: "/admin/leads" },
+    { label: "A/B Tests", num: abTests ?? 0, href: "/admin/ab-tests" },
   ];
 
   return (

@@ -1,6 +1,7 @@
 import { requireAdmin } from "@/lib/guard";
 import { createServerClient } from "@/lib/supabase/server";
-import { setActiveTemplate } from "@/lib/actions";
+import { setActiveTemplate, setDefaultPalette } from "@/lib/actions";
+import { PALETTES } from "@/lib/templates";
 
 const TEMPLATES = [
   {
@@ -28,6 +29,11 @@ const TEMPLATES = [
     name: "Comparison (VS)",
     desc: "Head-to-head: Hero → VigRX vs Others → Verdict → FAQ. For visitors actively comparing products.",
   },
+  {
+    id: "vigrx-official",
+    name: "VigRX Official (vigrxplus.com style)",
+    desc: "Official-store style: Hero → Proof stats → Benefits → Doctor endorsement → Ingredients → Reviews → Guarantee → Lead form → FAQ → Final CTA. Red/gold theme mirroring vigrxplus.com.",
+  },
 ];
 
 export default async function TemplatesPage() {
@@ -35,7 +41,7 @@ export default async function TemplatesPage() {
   const supabase = createServerClient();
   const { data: settings } = await supabase
     .from("site_settings")
-    .select("active_template")
+    .select("active_template, palette")
     .eq("id", 1)
     .maybeSingle();
   const active = settings?.active_template || "classic-sales";
@@ -44,6 +50,29 @@ export default async function TemplatesPage() {
     <div>
       <h1>Landing Page Templates</h1>
       <p>Select which template is active. Changes take effect immediately on the front page.</p>
+
+      <h2 style={{ marginTop: 32 }}>Default Color Palette</h2>
+      <p>
+        Warna default untuk homepage (<code>/</code>) dan tiap page yang belum
+        memilih palette sendiri.
+      </p>
+      <form action={setDefaultPalette} className="template-filter">
+        <label>
+          Palette
+          <select name="palette" defaultValue={settings?.palette ?? "red"}>
+            {PALETTES.map((p) => (
+              <option key={p} value={p}>
+                {p}
+              </option>
+            ))}
+          </select>
+        </label>
+        <span className="template-filter-actions">
+          <button className="btn" type="submit">
+            Save
+          </button>
+        </span>
+      </form>
       <div className="dash-cards">
         {TEMPLATES.map((t) => (
           <div className="dash-card" key={t.id}>

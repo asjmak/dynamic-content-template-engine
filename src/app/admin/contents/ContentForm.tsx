@@ -2,7 +2,13 @@ import { upsertContent } from "@/lib/actions";
 import { createServerClient } from "@/lib/supabase/server";
 import type { Content } from "@/lib/types";
 
-export default async function ContentForm({ content }: { content?: Content }) {
+export default async function ContentForm({
+  content,
+  defaultSection,
+}: {
+  content?: Content;
+  defaultSection?: string;
+}) {
   const supabase = createServerClient();
   const [
     { data: sections },
@@ -19,7 +25,10 @@ export default async function ContentForm({ content }: { content?: Content }) {
       {content?.id && <input type="hidden" name="id" value={content.id} />}
       <label>
         Section
-        <select name="section_id" defaultValue={content?.section_id ?? ""}>
+        <select
+          name="section_id"
+          defaultValue={content?.section_id ?? defaultSection ?? ""}
+        >
           <option value="">— (tanpa section)</option>
           {(sections ?? []).map((s: any) => (
             <option key={s.id} value={s.id}>

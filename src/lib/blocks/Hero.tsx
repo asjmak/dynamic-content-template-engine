@@ -28,6 +28,18 @@ export default function Hero({ section }: { section: SectionWithContents }) {
               ))}
             </div>
           )}
+          {Array.isArray(s.trust_items) && s.trust_items.length > 0 && (
+            <div className="trust-row">
+              {s.trust_items.map((t: any, i: number) => (
+                <span key={i}>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                    <path d="M12 2l2.4 4.9 5.4.8-3.9 3.8.9 5.4L12 14.8 7.2 17l.9-5.4L4.2 7.7l5.4-.8L12 2z" fill="#C9A24B"/>
+                  </svg>
+                  {t.text}
+                </span>
+              ))}
+            </div>
+          )}
           {link && cta && (
             <a
               className="btn btn-lg"

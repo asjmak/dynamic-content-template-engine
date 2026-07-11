@@ -23,6 +23,162 @@
   --shadow-xl: 0 32px 64px rgba(15, 23, 42, 0.15);
 }
 
+/* ---------- Dark Theme ---------- */
+[data-theme="dark"] {
+  --bg: #0f172a;
+  --surface: #1e293b;
+  --ink: #f1f5f9;
+  --muted: #94a3b8;
+  --muted-light: #64748b;
+  --primary: #6366f1;
+  --primary-2: #8b5cf6;
+  --primaryGradient: linear-gradient(135deg, var(--primary), var(--primary-2));
+  --accent: #f59e0b;
+  --success: #22c55e;
+  --danger: #ef4444;
+  --border: #334155;
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.25);
+  --shadow-md: 0 6px 20px rgba(0, 0, 0, 0.35);
+  --shadow-lg: 0 22px 60px rgba(0, 0, 0, 0.45);
+  --shadow-xl: 0 32px 64px rgba(0, 0, 0, 0.55);
+}
+
+[data-theme="dark"] html, [data-theme="dark"] body {
+  color: var(--ink);
+  background: var(--bg);
+}
+
+[data-theme="dark"] .section:nth-of-type(even) {
+  background: #1a2235;
+}
+
+[data-theme="dark"] table {
+  background: var(--surface);
+  color: var(--ink);
+}
+
+[data-theme="dark"] th {
+  background: #1e293b;
+  color: var(--ink);
+}
+
+[data-theme="dark"] tr:hover {
+  background: #1a2235;
+}
+
+[data-theme="dark"] .card-icon {
+  background: linear-gradient(135deg, #1e293b, #334155);
+}
+
+[data-theme="dark"] .card-pill {
+  background: #1e293b;
+  color: #818cf8;
+}
+
+[data-theme="dark"] .card--quote {
+  background: linear-gradient(180deg, #1e293b, #0f172a);
+}
+
+[data-theme="dark"] .card--pro {
+  background: linear-gradient(180deg, #1e293b, #0f172a);
+}
+
+[data-theme="dark"] .card--con {
+  background: linear-gradient(180deg, #1e293b, #0f172a);
+}
+
+[data-theme="dark"] .card--offer {
+  background: linear-gradient(180deg, #1e1b4b, #1e293b);
+}
+
+[data-theme="dark"] .card--problem {
+  background: #2a1515;
+  border-color: #722f37;
+}
+
+[data-theme="dark"] .form input:focus,
+[data-theme="dark"] .form textarea:focus,
+[data-theme="dark"] .auth-form input:focus {
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.3);
+}
+
+[data-theme="dark"] .hero-img {
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.5);
+}
+
+[data-theme="dark"] .legal-note {
+  background: #2a2300;
+  border-color: #6b5c00;
+  color: #fde68a !important;
+}
+
+[data-theme="dark"] .lead-urgency {
+  background: linear-gradient(135deg, #4a3f00, #6b5c00);
+  color: #fde68a;
+}
+
+[data-theme="dark"] .lead-trust-badge {
+  background: #064e3b;
+  color: #6ee7b7;
+  border-color: #047857;
+}
+
+[data-theme="dark"] .template-filter select {
+  background: var(--surface);
+  color: var(--ink);
+}
+
+[data-theme="dark"] .guarantee-seal {
+  border-color: #1e293b;
+}
+
+/* ---------- Theme Toggle ---------- */
+.theme-toggle-wrap {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 90;
+}
+
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--surface);
+  color: var(--ink);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 10px 16px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: var(--shadow-md);
+  transition: all 0.25s ease;
+}
+
+.theme-toggle:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+  filter: brightness(1.05);
+}
+
+.theme-toggle__icon {
+  font-size: 18px;
+  line-height: 1;
+}
+
+.theme-toggle__label {
+  text-transform: capitalize;
+  min-width: 42px;
+  text-align: left;
+}
+
+@media (max-width: 680px) {
+  .theme-toggle__label { display: none; }
+  .theme-toggle { padding: 10px 12px; }
+}
+
+
 * { box-sizing: border-box; }
 
 html, body {
@@ -736,6 +892,39 @@ section[id] {
   flex-wrap: wrap;
 }
 
+.template-filter {
+  display: flex;
+  align-items: flex-end;
+  gap: 12px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.template-filter label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--ink);
+}
+
+.template-filter select {
+  padding: 9px 12px;
+  border: 1px solid var(--border, #d1d5db);
+  border-radius: 10px;
+  font-size: 14px;
+  background: #fff;
+  color: var(--ink);
+  min-width: 200px;
+}
+
+.template-filter-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
 .form {
   display: flex;
   flex-direction: column;
@@ -981,4 +1170,608 @@ html {
 /* ---------- Transition Utility ---------- */
 * {
   transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+/* =====================================================================
+   TEMPLATE: vigrx-official  —  palet merah/emas selaras vigrxplus.com
+   Semua blok memakai CSS variable di atas, jadi cukup override variabel
+   di scope [data-template="vigrx-official"] untuk mengubah seluruh tampilan.
+   ===================================================================== */
+[data-template="vigrx-official"] {
+  --ink: #1a1a1a;
+  --muted: #5b5b5b;
+  --bg-soft: #f8f5f1;
+  --line: #e7e1d8;
+  --bg-dark: #15100f;
+  font-family: "Open Sans", Arial, sans-serif;
+}
+
+[data-template="vigrx-official"] h1,
+[data-template="vigrx-official"] h2,
+[data-template="vigrx-official"] h3,
+[data-template="vigrx-official"] h4,
+[data-template="vigrx-official"] .btn {
+  font-family: "Montserrat", Arial, sans-serif;
+}
+
+/* ---------- Top Bar ---------- */
+.topbar {
+  background: var(--bg-dark);
+  color: #f1e9e4;
+  font-size: 0.82rem;
+  letter-spacing: 0.03em;
+}
+
+.topbar .wrap {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 38px;
+}
+
+.topbar .pill {
+  color: var(--accent-light);
+  font-weight: 600;
+}
+
+/* ---------- Sticky Offer Bar ---------- */
+.offer-bar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 90;
+  background: var(--primaryGradient);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  padding: 12px 44px 12px 16px;
+  text-align: center;
+  box-shadow: 0 -8px 24px rgba(0, 0, 0, 0.18);
+}
+
+.offer-bar .ob-text {
+  font-family: "Montserrat", Arial, sans-serif;
+  font-weight: 700;
+  font-size: 0.92rem;
+}
+
+.offer-bar .ob-text b {
+  color: var(--accent-light);
+}
+
+.offer-bar .btn {
+  padding: 11px 26px;
+  font-size: 0.92rem;
+}
+
+.offer-bar .ob-x {
+  position: absolute;
+  right: 12px;
+  top: 4px;
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 1.2rem;
+  cursor: pointer;
+  line-height: 1;
+}
+
+.offer-bar .ob-x:hover {
+  color: #fff;
+}
+
+@media (max-width: 560px) {
+  .offer-bar .ob-text {
+    font-size: 0.8rem;
+  }
+  .offer-bar {
+    gap: 8px;
+    padding: 10px 36px 10px 12px;
+  }
+}
+
+/* ---------- vigrx-official specific overrides ---------- */
+/* Hero: radial gradient background with dark text for contrast */
+[data-template="vigrx-official"] .hero {
+  background: radial-gradient(120% 120% at 80% 0%, #fff5f3 0%, #ffffff 55%);
+  color: var(--ink);
+}
+
+[data-template="vigrx-official"] .hero-heading {
+  color: var(--ink);
+}
+
+[data-template="vigrx-official"] .hero-sub {
+  color: var(--muted);
+  opacity: 1;
+}
+
+/* Rating badge with dark background */
+[data-template="vigrx-official"] .rating {
+  background: rgba(0, 0, 0, 0.05);
+  color: var(--ink);
+}
+
+[data-template="vigrx-official"] .rating .stars {
+  color: var(--accent);
+}
+
+/* Section title styling */
+[data-template="vigrx-official"] .section-title {
+  color: var(--ink);
+  font-weight: 900;
+  letter-spacing: -0.01em;
+}
+
+/* Stats cards with gold gradient text */
+[data-template="vigrx-official"] .card--stat {
+  text-align: center;
+  background: linear-gradient(180deg, #fff, #fbf3ef);
+  border-color: var(--line);
+}
+
+[data-template="vigrx-official"] .stat-num {
+  color: var(--accent);
+  font-family: "Montserrat", Arial, sans-serif;
+  font-weight: 900;
+  font-size: 2.4rem;
+  line-height: 1;
+}
+
+/* Button styling for vigrx-official */
+[data-template="vigrx-official"] .btn {
+  font-family: "Montserrat", Arial, sans-serif;
+}
+
+[data-template="vigrx-official"] .btn-primary {
+  background: linear-gradient(180deg, #E11D27, var(--primary));
+  box-shadow: 0 10px 24px rgba(193, 18, 28, 0.4);
+}
+
+[data-template="vigrx-official"] .btn-primary:hover {
+  background: linear-gradient(180deg, #ef2630, var(--red-dark));
+  box-shadow: 0 16px 30px rgba(193, 18, 28, 0.5);
+}
+
+[data-template="vigrx-official"] .btn-gold {
+  background: linear-gradient(180deg, var(--accent-light), var(--accent));
+  color: #3a2a06;
+  box-shadow: 0 10px 24px rgba(201, 162, 75, 0.4);
+}
+
+[data-template="vigrx-official"] .btn-gold:hover {
+  background: var(--primaryGradient);
+  transform: translateY(-2px);
+  box-shadow: 0 16px 30px rgba(193, 18, 28, 0.5);
+}
+
+/* Card CTA styling */
+[data-template="vigrx-official"] .card-cta {
+  width: 100%;
+  text-align: center;
+}
+
+[data-template="vigrx-official"] .card-cta::after {
+  content: "\2192";
+  font-weight: 800;
+}
+
+/* Selection highlight merah */
+[data-template="vigrx-official"] ::selection {
+  background: rgba(193, 18, 28, 0.18);
+  color: var(--ink);
+}
+
+/* Grid columns for vigrx-official benefits (3 columns on desktop, 1 on mobile) */
+[data-template="vigrx-official"] .benefits {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+@media (max-width: 900px) {
+  [data-template="vigrx-official"] .benefits {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Trust row styling for vigrx-official hero */
+[data-template="vigrx-official"] .trust-row {
+  display: flex;
+  gap: 22px;
+  flex-wrap: wrap;
+  margin-top: 14px;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+[data-template="vigrx-official"] .trust-row span {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+
+[data-template="vigrx-official"] .trust-row svg {
+  flex: none;
+}
+
+/* Lead modal styling */
+[data-template="vigrx-official"] .lead-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(20, 12, 11, 0.62);
+  backdrop-filter: blur(3px);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  padding: 20px;
+}
+
+[data-template="vigrx-official"] .lead-overlay.open {
+  display: flex;
+  animation: fade 0.2s ease;
+}
+
+[data-template="vigrx-official"] @keyframes fade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+[data-template="vigrx-official"] .lead-modal {
+  background: #fff;
+  border-radius: 22px;
+  max-width: 440px;
+  width: 100%;
+  padding: 34px;
+  position: relative;
+  box-shadow: 0 30px 70px rgba(0, 0, 0, 0.4);
+  text-align: center;
+}
+
+[data-template="vigrx-official"] .lead-modal .x {
+  position: absolute;
+  top: 14px;
+  right: 16px;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: none;
+  background: var(--bg-soft);
+  color: var(--muted);
+  font-size: 1.2rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+[data-template="vigrx-official"] .lead-modal .x:hover {
+  background: #eee;
+  color: var(--ink);
+}
+
+[data-template="vigrx-official"] .lead-modal .lm-badge {
+  width: 64px;
+  height: 64px;
+  margin: 0 auto 12px;
+  border-radius: 16px;
+  background: linear-gradient(180deg, #fff0ee, var(--bg-soft));
+  display: grid;
+  place-items: center;
+}
+
+[data-template="vigrx-official"] .lead-modal h3 {
+  font-size: 1.5rem;
+  margin-bottom: 6px;
+  font-family: "Montserrat", Arial, sans-serif;
+  font-weight: 800;
+  color: var(--ink);
+}
+
+[data-template="vigrx-official"] .lead-modal .sub {
+  color: var(--muted);
+  font-size: 0.95rem;
+  margin-bottom: 20px;
+}
+
+[data-template="vigrx-official"] .lead-urgency {
+  display: inline-block;
+  margin: 0 auto 4px;
+  padding: 8px 18px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #fef3c7, #fde68a);
+  color: #92400e;
+  font-weight: 800;
+  font-size: 0.85rem;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+  animation: pulseUrgency 2.4s ease-in-out infinite;
+}
+
+[data-template="vigrx-official"] @keyframes pulseUrgency {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.04); }
+}
+
+[data-template="vigrx-official"] .lead-field {
+  text-align: left;
+  margin-bottom: 14px;
+}
+
+[data-template="vigrx-official"] .lead-field label {
+  display: block;
+  font-family: "Montserrat", Arial, sans-serif;
+  font-weight: 700;
+  font-size: 0.82rem;
+  color: var(--primary-2);
+  margin-bottom: 6px;
+  letter-spacing: 0.02em;
+}
+
+[data-template="vigrx-official"] .lead-field input {
+  width: 100%;
+  padding: 14px 16px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  font-size: 1rem;
+  font-family: "Open Sans", Arial, sans-serif;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+[data-template="vigrx-official"] .lead-field input:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 4px rgba(193, 18, 28, 0.12);
+}
+
+[data-template="vigrx-official"] .lead-trust {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  margin-top: 16px;
+}
+
+[data-template="vigrx-official"] .lead-trust-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #ecfdf5;
+  color: #047857;
+  border: 1px solid #a7f3d0;
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 6px 12px;
+  border-radius: 999px;
+}
+
+[data-template="vigrx-official"] .lead-success {
+  display: none;
+  padding: 10px 0;
+}
+
+[data-template="vigrx-official"] .lead-success.show {
+  display: block;
+}
+
+[data-template="vigrx-official"] .lead-success .spinner {
+  width: 42px;
+  height: 42px;
+  border: 4px solid var(--bg-soft);
+  border-top-color: var(--primary);
+  border-radius: 50%;
+  margin: 0 auto 14px;
+  animation: spin 1s linear infinite;
+}
+
+[data-template="vigrx-official"] @keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+[data-template="vigrx-official"] .lead-modal .fine {
+  font-size: 0.74rem;
+  color: var(--muted);
+  margin-top: 14px;
+  line-height: 1.5;
+}
+
+/* ---------- Admin: grouped content by section ---------- */
+.section-group {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  margin-bottom: 16px;
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+}
+
+.section-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  cursor: pointer;
+  list-style: none;
+  background: #f8fafc;
+  border-bottom: 1px solid transparent;
+  user-select: none;
+}
+.section-head::-webkit-details-marker { display: none; }
+.section-group[open] .section-head { border-bottom-color: var(--border); }
+
+.section-toggle {
+  font-size: 12px;
+  color: var(--muted);
+  transition: transform 0.2s ease;
+}
+.section-group[open] .section-toggle { transform: rotate(0deg); }
+.section-group:not([open]) .section-toggle { transform: rotate(-90deg); }
+
+.section-title-text {
+  font-weight: 800;
+  font-size: 16px;
+  color: var(--ink);
+}
+
+.block-chip {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: #eef2ff;
+  color: var(--primary);
+}
+
+.status-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  display: inline-block;
+  flex-shrink: 0;
+}
+.status-dot.on { background: var(--success); }
+.status-dot.off { background: var(--muted-light); }
+
+.section-meta {
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.section-head-actions {
+  margin-left: auto;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.section-body { padding: 12px 16px 16px; }
+
+.btn-sm {
+  padding: 8px 14px;
+  font-size: 13px;
+  border-radius: 10px;
+}
+
+.reorder-cell {
+  display: inline-flex;
+  gap: 4px;
+}
+
+.reorder-btn {
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--ink);
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s ease;
+}
+.reorder-btn:hover:not(:disabled) {
+  border-color: var(--primary);
+  color: var(--primary);
+  background: #eef2ff;
+}
+.reorder-btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.empty {
+  color: var(--muted);
+  font-size: 14px;
+  margin: 8px 0;
+}
+
+.section-cell-title {
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.count-link {
+  display: inline-block;
+  min-width: 28px;
+  text-align: center;
+  font-weight: 700;
+  color: var(--primary);
+  background: #eef2ff;
+  border-radius: 999px;
+  padding: 2px 10px;
+  text-decoration: none;
+  transition: all 0.15s ease;
+}
+.count-link:hover {
+  background: var(--primaryGradient);
+  color: #fff;
+}
+
+[data-theme="dark"] .section-cell-title { color: var(--ink); }
+[data-theme="dark"] .count-link { background: #334155; color: #a5b4fc; }
+[data-theme="dark"] .count-link:hover { color: #fff; }
+
+/* =====================================================================
+   PALETTE (skema warna) — dipasang via atribut data-palette di <main>.
+   Memisahkan "warna" dari "template": satu template bisa berwarna
+   merah/hijau/biru/violet secara independen.
+   Variable di sini menimpa --primary/--accent dls. (darker di dark mode
+   di-handle oleh [data-theme="dark"] yang mengubah surface/text).
+   ===================================================================== */
+[data-palette="red"] {
+  --primary: #c1121c;
+  --primary-2: #8b0c14;
+  --primaryGradient: linear-gradient(135deg, #e11d27, #8b0c14);
+  --accent: #c9a24b;
+  --accent-light: #e7c87a;
+}
+
+[data-palette="green"] {
+  --primary: #0f766e;
+  --primary-2: #064e3b;
+  --primaryGradient: linear-gradient(135deg, #10b981, #064e3b);
+  --accent: #f59e0b;
+  --accent-light: #fcd34d;
+}
+
+[data-palette="blue"] {
+  --primary: #1d4ed8;
+  --primary-2: #1e3a8a;
+  --primaryGradient: linear-gradient(135deg, #2563eb, #1e3a8a);
+  --accent: #0ea5e9;
+  --accent-light: #7dd3fc;
+}
+
+[data-palette="violet"] {
+  --primary: #6d28d9;
+  --primary-2: #4c1d95;
+  --primaryGradient: linear-gradient(135deg, #7c3aed, #4c1d95);
+  --accent: #a855f7;
+  --accent-light: #d8b4fe;
+}
+
+/* Dark mode: pertahankan hue palette, tapi sedikit turunkan agar nyaman
+   di atas surface gelap. */
+[data-palette="red"][data-theme="dark"] { --primary: #ef4444; --primary-2: #b91c1c; }
+[data-palette="green"][data-theme="dark"] { --primary: #34d399; --primary-2: #059669; }
+[data-palette="blue"][data-theme="dark"] { --primary: #60a5fa; --primary-2: #2563eb; }
+[data-palette="violet"][data-theme="dark"] { --primary: #a78bfa; --primary-2: #7c3aed; }
+
+/* Dark theme: grouped section */
+[data-theme="dark"] .section-group { background: var(--surface); }
+[data-theme="dark"] .section-head { background: #1e293b; }
+[data-theme="dark"] .block-chip { background: #334155; color: #a5b4fc; }
+[data-theme="dark"] .reorder-btn { background: #1e293b; color: var(--ink); border-color: var(--border); }
+[data-theme="dark"] .reorder-btn:hover:not(:disabled) {
+  background: #334155;
+  color: #a5b4fc;
+  border-color: var(--primary);
 }

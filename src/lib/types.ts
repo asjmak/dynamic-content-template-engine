@@ -14,6 +14,7 @@ export interface SiteSettings {
   default_og_image: string | null;
   site_url: string | null;
   active_template: string;
+  palette: string;
 }
 
 export interface Section {
@@ -51,6 +52,29 @@ export interface Content {
   og_image_url: string | null;
   is_active: boolean;
   links?: Link[];
+}
+
+export interface AbTest {
+  id: string;
+  name: string;
+  template: string;
+  section_id: string;
+  content_a_id: string;
+  content_b_id: string;
+  is_active: boolean;
+  created_at: string;
+}
+
+export interface Page {
+  id: string;
+  slug: string;
+  template: string;
+  title: string | null;
+  meta_description: string | null;
+  status: string;
+  palette: string;
+  created_at: string;
+  updated_at: string;
 }
 
 export interface SectionWithContents extends Section {

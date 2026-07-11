@@ -56,6 +56,57 @@ export async function deleteSection(formData: FormData) {
   redirect("/admin/sections");
 }
 
+// ---------------- PAGES (multi-slug) ----------------
+export async function upsertPage(formData: FormData) {
+  await requireAdmin();
+  const supabase = createServerClient();
+  const id = str(formData.get("id"));
+  const slug = str(formData.get("slug")).toLowerCase().trim();
+  if (!slug) {
+    redirect("/admin/pages");
+    return;
+  }
+  const payload = {
+    slug,
+    template: str(formData.get("template")) || "classic-sales",
+    title: str(formData.get("title")) || null,
+    meta_description: str(formData.get("meta_description")) || null,
+    status: str(formData.get("status")) || "active",
+    palette: str(formData.get("palette")) || "red",
+    updated_at: new Date().toISOString(),
+  };
+  if (id) {
+    await supabase.from("pages").update(payload).eq("id", id);
+  } else {
+    await supabase.from("pages").insert(payload);
+  }
+  revalidatePath("/admin/pages");
+  revalidatePath("/");
+  revalidatePath("/" + slug);
+  redirect("/admin/pages");
+}
+
+export async function deletePage(formData: FormData) {
+  await requireAdmin();
+  const supabase = createServerClient();
+  const id = str(formData.get("id"));
+  if (id) await supabase.from("pages").delete().eq("id", id);
+  revalidatePath("/admin/pages");
+  revalidatePath("/");
+  redirect("/admin/pages");
+}
+
+// ---------------- SITE SETTINGS (default palette global) ----------------
+export async function setDefaultPalette(formData: FormData) {
+  await requireAdmin();
+  const supabase = createServerClient();
+  const palette = str(formData.get("palette")) || "red";
+  await supabase.from("site_settings").update({ palette }).eq("id", 1);
+  revalidatePath("/");
+  revalidatePath("/admin/templates");
+  redirect("/admin/templates");
+}
+
 // ---------------- CONTENTS ----------------
 export async function upsertContent(formData: FormData) {
   await requireAdmin();
@@ -113,6 +164,47 @@ export async function deleteContent(formData: FormData) {
   redirect("/admin/contents");
 }
 
+// Pindah urutan content ke atas/bawah dalam section yang sama.
+// Menggeser posisi lalu menomori ulang ordering 0..n agar selalu konsisten.
+export async function reorderContent(formData: FormData) {
+  await requireAdmin();
+  const supabase = createServerClient();
+  const id = str(formData.get("id"));
+  const dir = str(formData.get("dir")) === "down" ? "down" : "up";
+  if (!id) return;
+
+  const { data: cur } = await supabase
+    .from("contents")
+    .select("id, section_id")
+    .eq("id", id)
+    .single();
+  if (!cur || !cur.section_id) return;
+
+  const { data: list } = await supabase
+    .from("contents")
+    .select("id")
+    .eq("section_id", cur.section_id)
+    .order("ordering")
+    .order("id");
+  if (!list || list.length < 2) return;
+
+  const idx = list.findIndex((c) => c.id === id);
+  if (idx < 0) return;
+  const target = dir === "up" ? idx - 1 : idx + 1;
+  if (target < 0 || target >= list.length) return;
+
+  const arr = [...list];
+  [arr[idx], arr[target]] = [arr[target], arr[idx]];
+
+  await Promise.all(
+    arr.map((c, i) =>
+      supabase.from("contents").update({ ordering: i }).eq("id", c.id)
+    )
+  );
+  revalidatePath("/admin/contents");
+  revalidatePath("/");
+}
+
 // ---------------- LINKS ----------------
 export async function upsertLink(formData: FormData) {
   await requireAdmin();
@@ -156,4 +248,51 @@ export async function setActiveTemplate(formData: FormData) {
   revalidatePath("/");
   revalidatePath("/admin/templates");
   redirect("/admin/templates");
+}
+
+// ---------------- A/B TESTS ----------------
+export async function upsertAbTest(formData: FormData) {
+  await requireAdmin();
+  const supabase = createServerClient();
+  const id = str(formData.get("id"));
+  const payload = {
+    name: str(formData.get("name")),
+    template: str(formData.get("template")) || "classic-sales",
+    section_id: str(formData.get("section_id")),
+    content_a_id: str(formData.get("content_a_id")),
+    content_b_id: str(formData.get("content_b_id")),
+    is_active: bool(formData.get("is_active")),
+  };
+  if (!payload.name || !payload.section_id || !payload.content_a_id || !payload.content_b_id) {
+    redirect("/admin/ab-tests");
+  }
+  if (id) {
+    await supabase.from("ab_tests").update(payload).eq("id", id);
+  } else {
+    await supabase.from("ab_tests").insert(payload);
+  }
+  revalidatePath("/");
+  revalidatePath("/admin/ab-tests");
+  redirect("/admin/ab-tests");
+}
+
+export async function deleteAbTest(formData: FormData) {
+  await requireAdmin();
+  const supabase = createServerClient();
+  const id = str(formData.get("id"));
+  if (id) await supabase.from("ab_tests").delete().eq("id", id);
+  revalidatePath("/");
+  revalidatePath("/admin/ab-tests");
+  redirect("/admin/ab-tests");
+}
+
+export async function toggleAbTest(formData: FormData) {
+  await requireAdmin();
+  const supabase = createServerClient();
+  const id = str(formData.get("id"));
+  const active = bool(formData.get("is_active"));
+  if (id) await supabase.from("ab_tests").update({ is_active: active }).eq("id", id);
+  revalidatePath("/");
+  revalidatePath("/admin/ab-tests");
+  redirect("/admin/ab-tests");
 }
